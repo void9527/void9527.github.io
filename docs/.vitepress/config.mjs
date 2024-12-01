@@ -7,6 +7,7 @@ export default defineConfig({
   lastUpdated: true,
   lang: "zh-CN",
   head: [["link", { rel: "icon", href: "/favicon.ico" }]],
+  base: "/",
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     nav: [
