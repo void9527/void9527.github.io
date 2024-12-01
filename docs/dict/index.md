@@ -79,24 +79,24 @@ sidebar: false
 
 # 管理工具
 
-| 工具名称                                         | 描述                | 本地链接 |
-| ------------------------------------------------ | ------------------- | -------- |
-| [npm 官网](https://www.npmjs.com/)               | JavaScript 包管理器 |          |
-| [cnpm 官网](https://www.npmjs.com/package/cnpm)  | node 包管理器       |          |
-| [yarn 官网](https://yarnpkg.com/)                | JavaScript 包管理器 |          |
-| [pnpm 中文网](https://www.pnpm.cn/)              | JavaScript 包管理器 |          |
-| [brew 官网](https://brew.sh/)                    | 包管理器            | [brew](/brew.md)         |
-| [apt 官网](https://wiki.debian.org/)             | 包管理器            |          |
-| [pip 官网](https://pypi.org/)                    | 包管理器            |          |
-| [cmake 官网](https://cmake.org/)                 | 编译工具            |          |
-| [make 官网](https://www.gnu.org/software/make/)  | 编译工具            |          |
-| [nvm 官网](https://github.com/nvm-sh/nvm)        | node 版本管理器     |          |
-| [podman 官网](https://podman.io/)                | 容器管理工具        |          |
-| [adb 官网](https://developer.android.google.cn/) | android 调试工具    |          |
-| [docker 官网](https://www.docker.com/)           | 容器管理工具        ||
-| [git 官网](https://git-scm.com/)                 | 版本控制工具        ||
-| [flutter 中文网](https://flutter.cn/)            | flutter 管理工具    ||
-| [wget 官网](https://www.gnu.org/software/wget/)  | 下载工具            ||
+| 工具名称                                         | 描述                |
+| ------------------------------------------------ | ------------------- |
+| [npm 官网](https://www.npmjs.com/)               | JavaScript 包管理器 |
+| [cnpm 官网](https://www.npmjs.com/package/cnpm)  | node 包管理器       |
+| [yarn 官网](https://yarnpkg.com/)                | JavaScript 包管理器 |
+| [pnpm 中文网](https://www.pnpm.cn/)              | JavaScript 包管理器 |
+| [brew 官网](https://brew.sh/)                    | 包管理器            |
+| [apt 官网](https://wiki.debian.org/)             | 包管理器            |
+| [pip 官网](https://pypi.org/)                    | 包管理器            |
+| [cmake 官网](https://cmake.org/)                 | 编译工具            |
+| [make 官网](https://www.gnu.org/software/make/)  | 编译工具            |
+| [nvm 官网](https://github.com/nvm-sh/nvm)        | node 版本管理器     |
+| [podman 官网](https://podman.io/)                | 容器管理工具        |
+| [adb 官网](https://developer.android.google.cn/) | android 调试工具    |
+| [docker 官网](https://www.docker.com/)           | 容器管理工具        |
+| [git 官网](https://git-scm.com/)                 | 版本控制工具        |
+| [flutter 中文网](https://flutter.cn/)            | flutter 管理工具    |
+| [wget 官网](https://www.gnu.org/software/wget/)  | 下载工具            |
 
 # 静态服务器
 
