@@ -23,7 +23,7 @@ export default defineConfig({
           { text: "代码检查和格式化", link: "/engineering/lint" },
           { text: "测试框架", link: "/engineering/test" },
           { text: "版本控制系统", link: "/engineering/version" },
-          { text: "持续集成和持续部署", link: "/engineering/ci" },
+          { text: "持续集成和持续部署", link: "/engineering/cicd" },
           { text: "依赖管理", link: "/engineering/dependency" },
           { text: "性能优化", link: "/engineering/performance" },
           { text: "文档生成和管理", link: "/engineering/document" },
@@ -34,6 +34,7 @@ export default defineConfig({
         items: [
           { text: "简介", link: "/vue/index" },
           { text: "配置", link: "/vue/config" },
+          { text: "Pinia", link: "/vue/pinia" },
         ],
       },
       {
@@ -92,6 +93,11 @@ export default defineConfig({
             { text: "Shiki", link: "https://shiki.tmrs.site/" },
             { text: "shadcn-vue", link: "https://www.shadcn-vue.com/" },
           ],
+        },
+        {
+          text: "UI",
+          collapsed: true,
+          items: [{ text: "市场", link: "https://ui-libs.vercel.app/" }],
         },
       ],
       "/react/": [
@@ -263,6 +269,16 @@ export default defineConfig({
           collapsed: true,
           items: [{ text: "UPDF", link: "https://ai.updf.cn/" }],
         },
+        {
+          text: "浏览器",
+          collapsed: true,
+          items: [
+            {
+              text: "Chrome DevTools",
+              link: "https://juejin.cn/post/6844903971677536270?utm_source=gold_browser_extension#heading-28",
+            },
+          ],
+        },
       ],
       "/other/doc/": [
         {
@@ -273,6 +289,38 @@ export default defineConfig({
             { text: "后端鉴权模型", link: "/other/doc/role" },
             { text: "数据库中间件", link: "/other/doc/data-base" },
             { text: "HTML5 新增API", link: "/other/doc/h5" },
+          ],
+        },
+        {
+          text: "服务",
+          collapsed: true,
+          items: [
+            {
+              text: "部署方案",
+              link: "https://mp.weixin.qq.com/s?__biz=MzI4MTY5NTk4Ng==&mid=2247489100&idx=1&sn=eab291eb345c074114d946b732e037eb&source=41#wechat_redirect",
+            },
+            {
+              text: "开发方案",
+              link: "https://www.cnblogs.com/tianguook/p/4004726.html",
+            },
+            {
+              text: "HTTPD",
+              link: "https://blog.51cto.com/u_13570193/2112888",
+            },
+            {
+              text: "OAuth2.0",
+              link: "/other/doc/oauth",
+            },
+          ],
+        },
+        {
+          text: "Linux",
+          collapsed: true,
+          items: [
+            {
+              text: "目录说明",
+              link: "https://www.cnblogs.com/zhuchenglin/p/8686924.html",
+            },
           ],
         },
       ],
