@@ -75,6 +75,10 @@ export default defineConfig({
       ],
       "/vue/": [
         {
+          text: "市场",
+          link: "http://vue.easydo.work/",
+        },
+        {
           text: "集成框架",
           collapsed: false,
           items: [{ text: "VBen Admin", link: "https://doc.vben.pro/" }],
@@ -97,14 +101,39 @@ export default defineConfig({
         {
           text: "UI",
           collapsed: true,
-          items: [{ text: "市场", link: "https://ui-libs.vercel.app/" }],
+          items: [
+            { text: "市场", link: "https://ui-libs.vercel.app/" },
+            {
+              text: "shadcn-ui",
+              link: "https://www.shadcn.com.cn/",
+            },
+          ],
+        },
+        {
+          text: "动效",
+          collapsed: true,
+          items: [
+            {
+              text: "vue-kinesis",
+              link: "https://www.aminerman.com/kinesis/#/",
+            },
+            {
+              text: "GASP",
+              link: "https://gsap.com/",
+            },
+          ],
         },
       ],
       "/react/": [
         {
           text: "集成框架",
           collapsed: false,
-          items: [],
+          items: [
+            { text: "Next.js", link: "https://nextjs.org/" },
+            { text: "Astro", link: "https://astro.build/" },
+            { text: "Remix", link: "https://remix.run/" },
+            { text: "Gatsby", link: "https://www.gatsbyjs.com/" },
+          ],
         },
         {
           text: "状态管理",
@@ -159,6 +188,16 @@ export default defineConfig({
           ],
         },
         {
+          text: "体验优化",
+          collapsed: true,
+          items: [
+            {
+              text: "新手引导",
+              link: "https://github.com/kamranahmedse/driver.js",
+            },
+          ],
+        },
+        {
           text: "测试框架",
           collapsed: true,
           items: [{ text: "Vitest", link: "https://cn.vitest.dev/" }],
@@ -166,7 +205,10 @@ export default defineConfig({
         {
           text: "版本控制系统",
           collapsed: true,
-          items: [{ text: "git", link: "https://git-scm.com/book/zh/v2" }],
+          items: [
+            { text: "git", link: "https://git-scm.com/book/zh/v2" },
+            { text: "cz-git", link: "https://cz-git.qbb.sh/zh/" },
+          ],
         },
         {
           text: "持续集成和持续部署",
@@ -192,7 +234,7 @@ export default defineConfig({
           text: "文档生成和管理",
           collapsed: true,
           items: [
-            { text: "JSDoc", link: "http://jsdoc.app/" },
+            { text: "JSDoc", link: "https://www.shouce.ren/api/view/a/13308" },
             { text: "TSDoc", link: "https://typedoc.org/" },
           ],
         },
@@ -205,7 +247,7 @@ export default defineConfig({
             { text: "类型推导", link: "/typescript/index" },
             { text: "辅助指令", link: "/typescript/func" },
             { text: "配置文件", link: "/typescript/tsconfig" },
-            { text: "泛型", link: "/typescript/generics" },
+            { text: "其他", link: "/typescript/qa" },
           ],
         },
         {
@@ -258,6 +300,7 @@ export default defineConfig({
             { text: "adb", link: "/other/adb" },
             { text: "brew", link: "/other/brew" },
             { text: "git", link: "/other/git" },
+            { text: "zx", link: "https://google.github.io/zx/getting-started" },
             {
               text: "Charles",
               link: "https://mp.weixin.qq.com/s/9qRcbhW_lW9CMd0hjaT51A",
@@ -276,6 +319,24 @@ export default defineConfig({
             {
               text: "Chrome DevTools",
               link: "https://juejin.cn/post/6844903971677536270?utm_source=gold_browser_extension#heading-28",
+            },
+          ],
+        },
+        {
+          text: "桌面客户端",
+          collapsed: true,
+          items: [
+            {
+              text: "【Pake】Rust构建客户端",
+              link: "https://github.com/tw93/Pake",
+            },
+            {
+              text: "【Tauri】Rust构建客户端",
+              link: "https://tauri.app/",
+            },
+            {
+              text: "【Electron】JS构建客户端",
+              link: "https://www.electronjs.org/",
             },
           ],
         },
@@ -321,6 +382,29 @@ export default defineConfig({
               text: "目录说明",
               link: "https://www.cnblogs.com/zhuchenglin/p/8686924.html",
             },
+            {
+              text: "Linux 常用命令",
+              link: "https://wangchujiang.com/linux-command/",
+            },
+          ],
+        },
+        {
+          text: "算法",
+          collapsed: true,
+          items: [{ text: "Hello 算法", link: "https://www.hello-algo.com/" }],
+        },
+        {
+          text: "工具",
+          collapsed: true,
+          items: [
+            {
+              text: "rustdesk 远程桌面",
+              link: "https://rustdesk.com/zh-cn/",
+            },
+            {
+              text: "Stirling PDF处理",
+              link: "https://www.stirlingpdf.com/",
+            },
           ],
         },
       ],
@@ -328,7 +412,7 @@ export default defineConfig({
 
     socialLinks: [
       { icon: "gitee", link: "https://gitee.com/maYun18600917746" },
-      { icon: "github", link: "https://github.com/18600917746" },
+      { icon: "github", link: "https://github.com/void9527" },
     ],
     search: {
       provider: "local",
