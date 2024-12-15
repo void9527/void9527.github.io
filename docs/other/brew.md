@@ -39,6 +39,12 @@ brew install [name]
 brew install --cask [name]
 ```
 
+## 删除包
+
+```bash
+brew uninstall [name]
+```
+
 ## 查看包
 
 ### 查看已安装的包列表
@@ -75,6 +81,12 @@ brew deps --installed --tree <package>
 
 ```bash
 brew upgrade <package>
+```
+
+### 升级所有包
+
+```bash
+brew upgrade
 ```
 
 ## 切换源地址

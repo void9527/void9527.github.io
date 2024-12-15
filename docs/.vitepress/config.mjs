@@ -116,14 +116,8 @@ export default defineConfig({
           collapsed: false,
           items: [
             {
-              text: "【Tauri】Rust构建客户端",
-              collapsed: false,
-              items: [
-                {
-                  text: "简介",
-                  link: "/platform/tauri/index",
-                },
-              ],
+              text: "Tauri",
+              link: "/platform/tauri/index",
             },
             {
               text: "【Electron】JS构建客户端",
@@ -267,7 +261,10 @@ export default defineConfig({
         {
           text: "持续集成和持续部署",
           collapsed: true,
-          items: [{ text: "Jenkins", link: "https://www.jenkins.io/" }],
+          items: [
+            { text: "Jenkins", link: "https://www.jenkins.io/" },
+            { text: "Docker", link: "/engineering/docker" },
+          ],
         },
         {
           text: "依赖管理",
@@ -391,7 +388,10 @@ export default defineConfig({
           items: [
             { text: "adb", link: "/other/adb" },
             { text: "brew", link: "/other/brew" },
+            { text: "cargo", link: "/other/environment.html#rust" },
+            { text: "cocoapods", link: "/other/cocoapods" },
             { text: "git", link: "/other/git" },
+            { text: "nvm", link: "/other/nvm" },
             { text: "zx", link: "https://google.github.io/zx/getting-started" },
             {
               text: "Charles",
