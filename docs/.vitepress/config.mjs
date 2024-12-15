@@ -7,7 +7,17 @@ export default defineConfig({
   description: "子标签",
   lastUpdated: true,
   lang: "zh-CN",
-  head: [["link", { rel: "icon", href: "/favicon.ico" }]],
+  head: [
+    ["link", { rel: "icon", href: "/favicon.ico" }],
+    [
+      "script",
+      {
+        defer: "",
+        dataDomain: "void9527.github.io",
+        src: "https://plausible.io/js/script.outbound-links.js",
+      },
+    ],
+  ],
   base: "/",
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
