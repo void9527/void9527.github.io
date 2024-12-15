@@ -1,12 +1,56 @@
 ---
 outline: deep
 ---
+# [官网](https://brew.sh/zh-cn/)
+
+## 安装与配置
+
+::: details
+::: code-group
+
+```bash [安装]
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+```
+
+```bash [更新]
+brew update
+```
+
+:::
+
+## M1 环境
+
+| 文件地址 | 描述 |
+|----|----|
+|/opt/homebrew|安装位置|
+|/opt/homebrew/Cellar|软件安装位置|
+
+## 安装包
+
+### 安装脚本
+
+```bash
+brew install [name]
+```
+
+### 安装mac软件包
+
+```bash
+brew install --cask [name]
+```
+
 ## 查看包
 
 ### 查看已安装的包列表
 
 ```bash
 brew list
+```
+
+### 查看已经过时的包
+
+```bash
+brew outdated
 ```
 
 ### 查看已安装的包版本信息

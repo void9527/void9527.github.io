@@ -1,5 +1,6 @@
 import { defineConfig } from "vitepress";
-
+import { vitepressDemoPlugin } from "vitepress-demo-plugin";
+import path from "path";
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
   title: "西羽某某",
@@ -12,8 +13,32 @@ export default defineConfig({
     // https://vitepress.dev/reference/default-theme-config
     nav: [
       { text: "首页", link: "/" },
-      { text: "字典", link: "/dict/" },
-      { text: "代码", link: "/code/node" },
+      { text: "环境配置", link: "/other/environment" },
+      {
+        text: "代码",
+        items: [
+          {
+            text: "node",
+            link: "/code/node",
+          },
+          {
+            text: "java",
+            link: "/code/java",
+          },
+          {
+            text: "python",
+            link: "/code/python",
+          },
+          {
+            text: "js",
+            link: "/code/js",
+          },
+          {
+            text: "css",
+            link: "/code/css",
+          },
+        ],
+      },
       {
         text: "工程化",
         items: [
@@ -48,29 +73,67 @@ export default defineConfig({
       {
         text: "文档",
         items: [
+          {
+            text: "Typescript",
+            link: "/typescript/index",
+          },
           { text: "工具", link: "/other/index" },
           {
             text: "杂文",
             link: "/other/doc/",
           },
+        ],
+      },
+      {
+        text: "跨平台",
+        items: [
           {
-            text: "Typescript",
-            link: "/typescript/index",
+            text: "移动端",
+            link: "/platform",
           },
           {
-            text: "Flutter",
-            link: "/flutter/index",
+            text: "桌面端",
+            link: "/platform",
           },
         ],
       },
     ],
 
     sidebar: {
-      "/flutter/": [
+      "/platform/": [
         {
-          text: "快速入门",
+          text: "移动端",
           collapsed: false,
-          items: [],
+          items: [
+            {
+              text: "Flutter",
+              link: "/platform/flutter/index",
+            },
+          ],
+        },
+        {
+          text: "pc",
+          collapsed: false,
+          items: [
+            {
+              text: "【Tauri】Rust构建客户端",
+              collapsed: false,
+              items: [
+                {
+                  text: "简介",
+                  link: "/platform/tauri/index",
+                },
+              ],
+            },
+            {
+              text: "【Electron】JS构建客户端",
+              link: "https://www.electronjs.org/",
+            },
+            {
+              text: "【Pake】Rust构建客户端",
+              link: "https://github.com/tw93/Pake",
+            },
+          ],
         },
       ],
       "/vue/": [
@@ -80,17 +143,14 @@ export default defineConfig({
         },
         {
           text: "集成框架",
-          collapsed: false,
           items: [{ text: "VBen Admin", link: "https://doc.vben.pro/" }],
         },
         {
           text: "前后一体",
-          collapsed: true,
           items: [{ text: "JeecgBoot", link: "https://help.jeecg.com/" }],
         },
         {
           text: "衍生框架",
-          collapsed: true,
           items: [
             { text: "Sli.dev", link: "https://cn.sli.dev/" },
             { text: "VitePress", link: "https://vitepress.dev/zh/" },
@@ -100,7 +160,6 @@ export default defineConfig({
         },
         {
           text: "UI",
-          collapsed: true,
           items: [
             { text: "市场", link: "https://ui-libs.vercel.app/" },
             {
@@ -111,15 +170,10 @@ export default defineConfig({
         },
         {
           text: "动效",
-          collapsed: true,
           items: [
             {
               text: "vue-kinesis",
               link: "https://www.aminerman.com/kinesis/#/",
-            },
-            {
-              text: "GASP",
-              link: "https://gsap.com/",
             },
           ],
         },
@@ -289,7 +343,45 @@ export default defineConfig({
         {
           text: "css",
           collapsed: true,
-          items: [{ text: "代码块", link: "/code/css/index" }],
+          items: [
+            { text: "代码块", link: "/code/css/index" },
+            {
+              text: "动效",
+              collapsed: true,
+              items: [
+                {
+                  text: "GASP",
+                  link: "https://gsap.com/",
+                },
+                {
+                  text: "Lottie",
+                  link: "https://lottiefiles.com/",
+                },
+              ],
+            },
+            {
+              text: "滚动视差",
+              collapsed: true,
+              items: [
+                {
+                  text: "ScrollMagic",
+                  link: "https://scrollmagic.io/",
+                },
+                {
+                  text: "Locomotive Scroll",
+                  link: "https://locomotivemtl.github.io/locomotive-scroll/",
+                },
+                {
+                  text: "Skrollr",
+                  link: "http://prinzhorn.github.io/skrollr/",
+                },
+                {
+                  text: "AOS (Animate On Scroll)",
+                  link: "https://michalsnik.github.io/aos/",
+                },
+              ],
+            },
+          ],
         },
       ],
       "/other/": [
@@ -309,34 +401,16 @@ export default defineConfig({
         },
         {
           text: "AI",
-          collapsed: true,
+          collapsed: false,
           items: [{ text: "UPDF", link: "https://ai.updf.cn/" }],
         },
         {
           text: "浏览器",
-          collapsed: true,
+          collapsed: false,
           items: [
             {
               text: "Chrome DevTools",
               link: "https://juejin.cn/post/6844903971677536270?utm_source=gold_browser_extension#heading-28",
-            },
-          ],
-        },
-        {
-          text: "桌面客户端",
-          collapsed: true,
-          items: [
-            {
-              text: "【Pake】Rust构建客户端",
-              link: "https://github.com/tw93/Pake",
-            },
-            {
-              text: "【Tauri】Rust构建客户端",
-              link: "https://tauri.app/",
-            },
-            {
-              text: "【Electron】JS构建客户端",
-              link: "https://www.electronjs.org/",
             },
           ],
         },
@@ -423,6 +497,11 @@ export default defineConfig({
     },
   },
   markdown: {
+    config(md) {
+      md.use(vitepressDemoPlugin, {
+        demoDir: path.resolve(__dirname, "../demo"),
+      });
+    },
     theme: {
       dark: "github-dark",
       light: "github-light",
