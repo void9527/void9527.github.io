@@ -130,8 +130,8 @@ export default defineConfig({
               link: "/platform/tauri/index",
             },
             {
-              text: "【Electron】JS构建客户端",
-              link: "https://www.electronjs.org/",
+              text: "Electron",
+              link: "/platform/electron/index",
             },
             {
               text: "【Pake】Rust构建客户端",
