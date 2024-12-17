@@ -212,42 +212,20 @@ export default defineConfig({
         {
           text: "构建系统",
           collapsed: false,
-          items: [
-            { text: "Vite", link: "https://cn.vite.dev/" },
-            { text: "Webpack", link: "https://webpack.docschina.org/" },
-            { text: "Rollup", link: "https://rollupjs.org/zh/" },
-            { text: "Parcel", link: "https://www.parceljs.org/" },
-            { text: "RollDown", link: "https://rolldown.rs/guide/" },
-            { text: "esbuild", link: "https://esbuild.github.io/" },
-          ],
+          link: "/engineering/build",
+          items: [],
         },
         {
           text: "任务运行器",
           collapsed: true,
-          items: [
-            { text: "Gulp", link: "https://gulpjs.com.cn/" },
-            { text: "Grunt", link: "https://gruntjs.com/" },
-            {
-              text: "npm-run-all",
-              link: "https://www.npmjs.com/package/npm-run-all",
-            },
-            { text: "fis3", link: "https://fis.js.org/" },
-          ],
+          link: "/engineering/task",
+          items: [],
         },
         {
           text: "代码检查和格式化",
           collapsed: true,
-          items: [
-            { text: "ESLint", link: "https://eslint.org/" },
-            { text: "Prettier", link: "https://prettier.io/" },
-            { text: "Stylelint", link: "https://stylelint.io/" },
-            {
-              text: "lint-staged",
-              link: "https://github.com/okonet/lint-staged",
-            },
-            { text: "commitlint", link: "https://commitlint.js.org/" },
-            { text: "cspell", link: "https://cspell.org/" },
-          ],
+          link: "/engineering/lint",
+          items: [],
         },
         {
           text: "体验优化",
@@ -267,14 +245,13 @@ export default defineConfig({
         {
           text: "版本控制系统",
           collapsed: true,
-          items: [
-            { text: "git", link: "https://git-scm.com/book/zh/v2" },
-            { text: "cz-git", link: "https://cz-git.qbb.sh/zh/" },
-          ],
+          link: "/engineering/version",
+          items: [],
         },
         {
           text: "持续集成和持续部署",
           collapsed: true,
+          link: "/engineering/cicd",
           items: [
             { text: "Jenkins", link: "https://www.jenkins.io/" },
             { text: "Docker", link: "/engineering/docker" },
