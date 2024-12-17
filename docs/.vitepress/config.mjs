@@ -128,14 +128,18 @@ export default defineConfig({
             {
               text: "Tauri",
               link: "/platform/tauri/index",
+              collapsed: true,
+              items: [
+                {
+                  text: "Pake-Tauri的基础封装",
+                  link: "https://github.com/tw93/Pake",
+                },
+              ],
             },
+
             {
               text: "Electron",
               link: "/platform/electron/index",
-            },
-            {
-              text: "【Pake】Rust构建客户端",
-              link: "https://github.com/tw93/Pake",
             },
           ],
         },
@@ -438,7 +442,7 @@ export default defineConfig({
         },
         {
           text: "服务",
-          collapsed: true,
+          collapsed: false,
           items: [
             {
               text: "部署方案",
@@ -460,7 +464,7 @@ export default defineConfig({
         },
         {
           text: "Linux",
-          collapsed: true,
+          collapsed: false,
           items: [
             {
               text: "目录说明",
@@ -474,12 +478,12 @@ export default defineConfig({
         },
         {
           text: "算法",
-          collapsed: true,
+          collapsed: false,
           items: [{ text: "Hello 算法", link: "https://www.hello-algo.com/" }],
         },
         {
           text: "工具",
-          collapsed: true,
+          collapsed: false,
           items: [
             {
               text: "rustdesk 远程桌面",

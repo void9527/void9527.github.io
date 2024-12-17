@@ -32,6 +32,68 @@ outline: deep
    - 作用：Docker Hub 提供了一个平台，开发者可以从中下载公共镜像，也可以将自己的镜像上传到 Hub 以供他人使用。
 
 :::
+::: details dockerfile文件与compose.yaml 文件的区别
+在 Docker 的生态系统中，`Dockerfile` 和 `docker-compose.yaml` 文件是两个重要的配置文件，它们各自有不同的用途和功能。以下是它们之间的主要区别：
+
+1. 定义和用途
+   - **Dockerfile**：
+     - **定义**：`Dockerfile` 是一个文本文件，包含了一系列指令，用于自动化构建 Docker 镜像。
+     - **用途**：通过 `Dockerfile`，开发者可以定义如何构建一个镜像，包括基础镜像、安装依赖、复制文件、设置环境变量等。使用 `docker build` 命令可以根据 `Dockerfile` 创建镜像。
+
+   - **docker-compose.yaml**：
+     - **定义**：`docker-compose.yaml` 是一个 YAML 格式的文件，用于定义和管理多个 Docker 容器的应用程序。
+     - **用途**：通过 `docker-compose.yaml`，开发者可以定义多个服务（容器）、网络和卷等配置。使用 `docker-compose up` 命令可以根据该文件启动整个应用程序的多个容器。
+2. 主要内容
+   - **Dockerfile**：
+     - 包含构建镜像的指令，如 `FROM`、`RUN`、`COPY`、`CMD` 等。
+     - 示例：
+
+       ```dockerfile
+       FROM node:14
+       WORKDIR /app
+       COPY package.json ./
+       RUN npm install
+       COPY . .
+       CMD ["node", "app.js"]
+       ```
+
+   - **docker-compose.yaml**：
+     - 包含服务的定义、网络配置、卷挂载等信息。
+     - 示例：
+
+       ```yaml
+       version: '3'
+       services:
+         web:
+           build: .
+           ports:
+             - "3000:3000"
+         db:
+           image: postgres
+           environment:
+             POSTGRES_PASSWORD: example
+       ```
+
+3. 作用范围
+   - **Dockerfile**：
+     - 主要用于构建单个 Docker 镜像，定义镜像的内容和行为。
+   - **docker-compose.yaml**：
+     - 用于定义和管理多个相关的服务（容器），可以同时启动、停止和管理多个容器。
+
+4. 使用场景
+   - **Dockerfile**：
+     - 当你需要创建一个自定义的 Docker 镜像时，使用 `Dockerfile`。
+   - **docker-compose.yaml**：
+     - 当你需要管理一个由多个服务组成的应用程序时，使用 `docker-compose.yaml`。例如，一个 Web 应用可能需要一个 Web 服务器和一个数据库服务。
+
+总结
+
+- **Dockerfile** 用于构建单个 Docker 镜像，定义镜像的内容和行为。
+- **docker-compose.yaml** 用于管理多个 Docker 容器，定义服务、网络和卷等配置。
+
+这两个文件通常是一起使用的，`Dockerfile` 用于构建镜像，而 `docker-compose.yaml` 用于管理和运行这些镜像所创建的容器。
+
+:::
 
 ## 安装 Docker
 
@@ -92,13 +154,13 @@ docker rmi <image_id>
 ### 删除所有镜像
 
 ```bash
-docker rmi $(docker images -q)
+docker rmi $(docker images -aq)
 ```
 
-### 创建镜像
+### 创建镜像（指定Dockerfile）
 
 ```bash
-docker build -f 
+docker build -f Dockerfile -t my_image:v0.0.1 .
 ```
 
 ### 提交镜像
@@ -323,3 +385,66 @@ docker volume inspect my_volume
 ```bash
 docker container inspect my_image
 ```
+
+#### 容器IP访问
+
+```bash
+curl http://192.127.0.1:80 
+```
+
+### 创建自定义域名空间
+
+- 容器IP会变更
+
+```bash
+docker run -d -p 8080:80 --name my_container --network mynet my_image
+```
+
+#### 自定义域名访问
+
+- 直接使用容器名称
+  
+```bash
+curl http://my_container:80 
+```
+
+## docker compose
+
+### 上线
+
+- d 后台启动
+- f 指定配置文件
+
+```bash
+docker compose up -d -f compose.yaml
+```
+
+### 下线
+
+```bash
+docker compose down 
+```
+
+### 指定启动
+
+```bash
+docker compose start x1 x2 x3
+```
+
+### 指定容器扩容（复制启动n份）
+
+```bash
+docker compose scale x2=3
+```
+
+### 指定停止
+
+```bash
+docker compose stop x1 x2 x3
+```
+
+## 案例
+
+### Redis主从集群
+
+直接使用第三方镜像`bitnami/redis`
