@@ -3,6 +3,16 @@ outline: deep
 ---
 # 环境配置
 
+## Nginx
+
+:::details
+
+```nginx
+
+```
+
+:::
+
 ## Docker
 
 ::: details

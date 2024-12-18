@@ -107,9 +107,47 @@ export default defineConfig({
           },
         ],
       },
+      {
+        text: "面试题",
+        link: "/interview/index",
+      },
     ],
 
     sidebar: {
+      "/interview/": [
+        {
+          text: "浏览器",
+          link: "/interview/#浏览器",
+        },
+        {
+          text: "网络",
+          link: "/interview/#网络",
+        },
+        {
+          text: "JavaScript",
+          link: "/interview/#javascript",
+        },
+        {
+          text: "Vue",
+          link: "/interview/#vue",
+        },
+        {
+          text: "React",
+          link: "/interview/#react",
+        },
+        {
+          text: "代码规范",
+          link: "/interview/#代码规范",
+        },
+        {
+          text: "TypeScript",
+          link: "/interview/#typescript",
+        },
+        {
+          text: "性能",
+          link: "/interview/#性能",
+        },
+      ],
       "/platform/": [
         {
           text: "移动端",
@@ -155,7 +193,17 @@ export default defineConfig({
         },
         {
           text: "前后一体",
-          items: [{ text: "JeecgBoot", link: "https://help.jeecg.com/" }],
+          items: [
+            { text: "JeecgBoot", link: "https://help.jeecg.com/" },
+            {
+              text: "BuildAdmin",
+              link: "https://www.buildadmin.com/",
+            },
+            {
+              text: "RuoYi",
+              link: "https://doc.ruoyi.vip/",
+            },
+          ],
         },
         {
           text: "衍生框架",
@@ -415,6 +463,7 @@ export default defineConfig({
             { text: "后端鉴权模型", link: "/other/doc/role" },
             { text: "数据库中间件", link: "/other/doc/data-base" },
             { text: "HTML5 新增API", link: "/other/doc/h5" },
+            { text: "WebWorker", link: "/other/doc/webworker.md" },
           ],
         },
         {

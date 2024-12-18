@@ -98,7 +98,7 @@ outline: deep
 
 ```
 
-``` [.env]
+```yaml [.env]
 VITE_APP_TITLE = 环境变量设置title
 VITE_APP_BASE_API = /api
 VITE_APP_PORT= 3600
@@ -108,12 +108,12 @@ VITE_APP_GZIP = true
 VITE_APP_VISUALIZER = false
 ```
 
-``` [.env.check]
+```yaml [.env.check]
 VITE_APP_GZIP = false
 VITE_APP_VISUALIZER = true
 ```
 
-``` [.env.dev]
+```yaml [.env.dev]
 VITE_APP_TITLE = dev环境
 VITE_APP_BASE_API = /api
 VITE_APP_BASE_URL = 变量设置baseUrl
@@ -121,14 +121,14 @@ VITE_APP_BASE_URL_PROD = 变量设置baseUrlProd
 
 ```
 
-``` [.env.prod]
+```yaml [.env.prod]
 VITE_APP_TITLE = prod环境
 VITE_APP_BASE_API = /api
 VITE_APP_BASE_URL = 变量设置baseUrl
 VITE_APP_BASE_URL_PROD = 变量设置baseUrlProd
 ```
 
-``` [.env.test]
+```yaml [.env.test]
 VITE_APP_TITLE = test环境
 VITE_APP_GZIP = false
 VITE_APP_VISUALIZER = true
