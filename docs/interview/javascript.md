@@ -33,6 +33,15 @@ if ( [] ) {
 
 ## 错误捕捉的方式
 
+:::details
+JavaScript中可以使用try...catch语句来捕捉错误，try块中放置可能抛出错误的代码，catch块中处理错误。
+
+- 使用try块包裹可能出错的代码，可以防止程序崩溃。
+- catch块可以捕获错误并执行相应的处理逻辑，如记录错误信息或提示用户。
+- 还可以使用finally块来执行无论是否发生错误都需要执行的代码，如清理资源。
+
+:::
+
 ## reflect有几个参数
 
 :::details
@@ -41,14 +50,6 @@ Reflect对象的方法通常接受两个或三个参数，具体取决于方法�
 - Reflect.apply(target, thisArgument, argumentsList)用于调用函数。
 - Reflect.get(target, propertyKey, receiver)用于获取对象属性。
 - Reflect.set(target, propertyKey, value, receiver)用于设置对象属性。
-
-:::
-:::details
-JavaScript中可以使用try...catch语句来捕捉错误，try块中放置可能抛出错误的代码，catch块中处理错误。
-
-- 使用try块包裹可能出错的代码，可以防止程序崩溃。
-- catch块可以捕获错误并执行相应的处理逻辑，如记录错误信息或提示用户。
-- 还可以使用finally块来执行无论是否发生错误都需要执行的代码，如清理资源。
 
 :::
 
@@ -171,5 +172,162 @@ Map是键值对集合，WeakMap的键必须是对象，并且对其不保持强�
 - Map支持任意类型的键，适合存储复杂数据结构。
 - WeakMap的键是弱引用，适合存储与DOM元素相关的数据，避免内存泄露。
 - WeakMap不支持遍历，适合用于私有数据存储。
+
+:::
+
+## 异步
+
+### Promise 报错如何拦截
+
+:::details
+在JavaScript中，Promise是用于处理异步操作的对象。Promise的错误处理可以通过`catch`方法来实现，或者在`async/await`语法中使用`try...catch`来捕获错误。
+
+- **使用`catch`方法**：
+  - 当Promise被拒绝（rejected）时，可以使用`catch`方法来处理错误。
+  - `catch`方法会接收一个回调函数，该函数会在Promise被拒绝时执行。
+  - 示例：
+
+    ```javascript
+    const promise = new Promise((resolve, reject) => {
+      // 模拟异步操作
+      setTimeout(() => {
+        reject(new Error('Something went wrong!'));
+      }, 1000);
+    });
+
+    promise
+      .then(result => {
+        console.log(result);
+      })
+      .catch(error => {
+        console.error('Error caught:', error.message);
+      });
+    ```
+
+- **使用`async/await`和`try...catch`**：
+  - 在使用`async/await`语法时，可以将Promise放在`try`块中，并在`catch`块中捕获错误。
+  - 这种方式使得异步代码的错误处理更加直观。
+  - 示例：
+
+    ```javascript
+    const asyncFunction = async () => {
+      try {
+        const result = await promise;
+        console.log(result);
+      } catch (error) {
+        console.error('Error caught:', error.message);
+      }
+    };
+
+    asyncFunction();
+    ```
+
+- **全局错误处理**：
+  - 对于未处理的Promise拒绝，可以使用`window.onunhandledrejection`事件来捕获。
+  - 这可以帮助开发者捕获所有未处理的Promise错误，进行统一处理。
+  - 示例：
+
+    ```javascript
+    window.onunhandledrejection = (event) => {
+      console.error('Unhandled promise rejection:', event.reason);
+    };
+    ```
+
+- **总结**：通过`catch`方法、`async/await`结合`try...catch`，以及全局错误处理，可以有效地拦截和处理Promise中的错误，提升代码的健壮性。
+
+:::
+
+### 代码使用太多try不优雅怎么办
+
+:::details
+在使用`async/await`时，频繁使用`try...catch`可能会导致代码变得冗长和不优雅。以下是一些优化建议，可以帮助减少`try...catch`的使用频率，并提高代码的可读性。
+
+- **封装错误处理**：
+  - 可以将错误处理逻辑封装到一个单独的函数中，这样在调用异步函数时只需处理一次错误。
+  - 示例：
+
+    ```javascript
+    const handleAsync = async (asyncFunc) => {
+      try {
+        return await asyncFunc();
+      } catch (error) {
+        console.error('Error caught:', error.message);
+      }
+    };
+
+    const fetchData = async () => {
+      return await handleAsync(async () => {
+        const response = await fetch('https://api.example.com/data');
+        return response.json();
+      });
+    };
+    ```
+
+- **使用中间件模式**：
+  - 在某些情况下，可以使用中间件模式来处理错误，尤其是在处理多个异步操作时。
+  - 示例：
+
+    ```javascript
+    const asyncMiddleware = async (req, res, next) => {
+      try {
+        await next();
+      } catch (error) {
+        console.error('Error caught:', error.message);
+        res.status(500).send('Internal Server Error');
+      }
+    };
+
+    const fetchData = async () => {
+      await asyncMiddleware({}, {}, async () => {
+        const response = await fetch('https://api.example.com/data');
+        return response.json();
+      });
+    };
+    ```
+
+- **使用Promise.all**：
+  - 如果有多个异步操作，可以使用`Promise.all`来并行处理，并在外层捕获错误。
+  - 示例：
+
+    ```javascript
+    const fetchMultipleData = async () => {
+      try {
+        const [data1, data2] = await Promise.all([
+          fetch('https://api.example.com/data1').then(res => res.json()),
+          fetch('https://api.example.com/data2').then(res => res.json()),
+        ]);
+        console.log(data1, data2);
+      } catch (error) {
+        console.error('Error caught:', error.message);
+      }
+    };
+    ```
+
+- **使用自定义错误类**：
+  - 创建自定义错误类，以便在捕获错误时提供更多上下文信息。
+  - 示例：
+
+    ```javascript
+    class CustomError extends Error {
+      constructor(message) {
+        super(message);
+        this.name = 'CustomError';
+      }
+    }
+ 
+    const fetchData = async () => {
+      try {
+        const response = await fetch('https://api.example.com/data');
+        if (!response.ok) {
+          throw new CustomError('Failed to fetch data');
+        }
+        return await response.json();
+      } catch (error) {
+        console.error('Error caught:', error.message);
+      }
+    };
+    ```
+
+- **总结**：通过封装错误处理、使用中间件模式、并行处理多个异步操作、创建自定义错误类等方式，可以减少`try...catch`的使用频率，提高代码的可读性和优雅性。
 
 :::

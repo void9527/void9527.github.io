@@ -136,13 +136,14 @@ export default defineConfig({
           link: "/interview/react",
         },
         {
-          text: "代码规范",
-          link: "/interview/standard",
-        },
-        {
           text: "TypeScript",
           link: "/interview/typescript",
         },
+        {
+          text: "代码规范",
+          link: "/interview/standard",
+        },
+
         {
           text: "性能",
           link: "/interview/performance",
