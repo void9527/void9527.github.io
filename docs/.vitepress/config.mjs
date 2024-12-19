@@ -117,39 +117,43 @@ export default defineConfig({
       "/interview/": [
         {
           text: "浏览器",
-          link: "/interview/#浏览器",
+          link: "/interview/browser",
         },
         {
           text: "网络",
-          link: "/interview/#网络",
+          link: "/interview/http",
         },
         {
           text: "JavaScript",
-          link: "/interview/#javascript",
+          link: "/interview/javascript",
         },
         {
           text: "Vue",
-          link: "/interview/#vue",
+          link: "/interview/vue",
         },
         {
           text: "React",
-          link: "/interview/#react",
+          link: "/interview/react",
         },
         {
           text: "代码规范",
-          link: "/interview/#代码规范",
+          link: "/interview/standard",
         },
         {
           text: "TypeScript",
-          link: "/interview/#typescript",
+          link: "/interview/typescript",
         },
         {
           text: "性能",
-          link: "/interview/#性能",
+          link: "/interview/performance",
         },
         {
           text: "服务端",
-          link: "/interview/#服务端",
+          link: "/interview/server",
+        },
+        {
+          text: "微前端",
+          link: "/interview/micro_front_end",
         },
       ],
       "/platform/": [
@@ -507,7 +511,7 @@ export default defineConfig({
           items: [
             {
               text: "目录说明",
-              link: "https://www.cnblogs.com/zhuchenglin/p/8686924.html",
+              link: "/linux/",
             },
             {
               text: "Linux 常用命令",
