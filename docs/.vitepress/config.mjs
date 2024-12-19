@@ -147,6 +147,10 @@ export default defineConfig({
           text: "性能",
           link: "/interview/#性能",
         },
+        {
+          text: "服务端",
+          link: "/interview/#服务端",
+        },
       ],
       "/platform/": [
         {
@@ -463,7 +467,16 @@ export default defineConfig({
             { text: "后端鉴权模型", link: "/other/doc/role" },
             { text: "数据库中间件", link: "/other/doc/data-base" },
             { text: "HTML5 新增API", link: "/other/doc/h5" },
-            { text: "WebWorker", link: "/other/doc/webworker.md" },
+            { text: "WebWorker", link: "/other/doc/webworker" },
+            { text: "虚拟化", link: "other/doc/virtualization" },
+            {
+              text: "程序、进程、线程、协程",
+              link: "other/doc/processes_threads_coroutines",
+            },
+            {
+              text: "nodejs与iojs",
+              link: "other/doc/node_iojs",
+            },
           ],
         },
         {

@@ -53,6 +53,34 @@ HTTP/1.0是无状态的，每个请求都需要建立新的连接，而HTTP/2.0�
 
 ## javaScript
 
+### Truthy、Falsy与true、false的区别
+
+:::details
+
+- truthy和true还是不一样的,隐含有true属性的变量不可以认为它是true,它不是boolean类型!
+
+> 像很多语言一样,javascript也支持boolean数据类型(有true和false两个值),不过特别的是,javascript中的任何对象都还隐含一个boolean值,这便是大家所说的truthy和falsy原则。我们可以很方便的使用这个隐含的属性,特别是在变量比较上(if条件句)。掌握好这些特别的规则有助于调试我们的前端代码。
+
+- 以下的值都隐含有false属性:
+  - false
+  - 0(零)
+  - "" (空串)
+  - null
+  - undefined
+  - NaN（Not-a-Number）注意,这是个number类型！用来表示变量不是number的number类型,有些拗口
+  
+```js
+if ( [] ) { 
+// 这里的代码将会执行 
+} if ( [] == true ) { 
+// 这里的代码不会执行 
+} if ( [] == false ) { 
+// 这里的代码将会执行 
+}
+```
+
+:::
+
 ### 错误捕捉的方式
 
 ### reflect有几个参数
@@ -324,5 +352,76 @@ TypeScript通过静态类型检查来确保代码的类型安全，支持基本�
 - 优点：数据变化时自动更新视图，减少手动操作，提高开发效率。
 - 缺点：复杂的响应式系统可能导致性能下降，尤其是在大数据量时。
 - 调试时，响应式数据流可能难以追踪，增加了开发的复杂性。
+
+:::
+
+## 服务端
+
+### cros跨域cookie和session失效解决方案
+
+::: details
+:::code-group
+
+```js [适用于 express koa egg]
+const cors = require('cors');
+const app = express();
+const corsOptions = {
+  origin: 'http://localhost:8080',
+  credentials: true,
+  maxAge: '1728000'
+  //这一项是为了跨域专门设置的
+}
+app.use(cors(corsOptions))
+```
+
+```js [前端]
+this.$http.get('getlogin',{ credentials: true }).then(res => {
+    console.log(res)
+})
+
+this.$http.post('postlogin',{userInfo: $('.form-signin').serialize()},{
+   credentials: true 
+}).then(res => {
+    console.log(res)
+    if(res.body.status != 200) {
+        console.log('登录失败')
+    }else {
+        console.log('登录成功')
+    }
+})
+```
+
+```js [原生]
+var xhr = new XMLHttpRequest();
+xhr.open('GET', 'http://www.xxx.com/api');
+xhr.withCredentials = true;
+xhr.onload = onLoadHandler;
+xhr.send()
+```
+
+```js [Jquery]
+$.ajax({
+    url: "http://localhost:8080/orders",
+    type: "GET",
+    xhrFields: {
+        withCredentials: true
+    },
+    crossDomain: true,
+    success: function (data) {
+        render(data);
+    }
+ });
+```
+
+```js [axios]
+const service = axios.create({
+  //设置默认请求头，使post请求发送的是formData格式数据
+  // axios的header默认的Content-Type好像是'application/json;charset=UTF-8'可以用这种方式修改
+  headers: {  
+    "Content-Type": "application/x-www-form-urlencoded"
+  },
+  withCredentials: true // 允许携带cookie
+})
+```
 
 :::

@@ -18,6 +18,27 @@ outline: deep
 - **优点**：易于管理，权限分配简单。
 - **缺点**：不适合需要细粒度权限控制的场景。
 
+:::details 关键的五张表
+
+- 用户表（UserInfo）：Id、UserName、UserPwd
+- 角色表（RoleInfo）：Id、RoleName
+- 菜单表（MenuInfo）：Id、MenuName
+- 用户角色表（UserRole）：Id、UserId、RoleId
+- 角色菜单表（RoleMenu）：Id、RoleId、MenuId
+
+> 基于权限的关系通用模型
+
+![表关系](./assets/rbac.png)
+
+> RBAC模块功能
+
+![表模型](./assets/rbac_model.png)
+
+> RBAC权限控制流程
+
+![流程](./assets/rbac_flow.png)
+:::
+
 ## ABAC模型：基于属性的访问控制 (Attribute-Based Access Control)
 
 - **说明**：ABAC 使用用户属性、资源属性和环境属性来定义访问策略。
