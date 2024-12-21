@@ -10,4 +10,4 @@ outline: deep
 
 ## 插件开发
 
-- [wxt](/vue/wxt/)
+- [wxt](/vue/wxt)
