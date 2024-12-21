@@ -70,6 +70,8 @@ export default defineConfig({
           { text: "简介", link: "/vue/index" },
           { text: "配置", link: "/vue/config" },
           { text: "Pinia", link: "/vue/pinia" },
+          { text: "Nuxt", link: "/vue/nuxt" },
+          { text: "Wxt", link: "/vue/wxt" },
         ],
       },
       {
@@ -95,7 +97,7 @@ export default defineConfig({
         ],
       },
       {
-        text: "跨平台",
+        text: "多端",
         items: [
           {
             text: "移动端",
@@ -104,6 +106,10 @@ export default defineConfig({
           {
             text: "桌面端",
             link: "/platform",
+          },
+          {
+            text: "浏览器",
+            link: "/platform/chrome/index",
           },
         ],
       },
@@ -190,8 +196,24 @@ export default defineConfig({
             },
           ],
         },
+        {
+          text: "浏览器",
+          collapsed: false,
+          link: "/platform/chrome/index",
+          items: [
+            {
+              text: "插件开发",
+              link: "/vue/wxt",
+            },
+          ],
+        },
       ],
       "/vue/": [
+        {
+          text: "面试题",
+          link: "/interview/vue",
+          items: [],
+        },
         {
           text: "市场",
           link: "http://vue.easydo.work/",
@@ -368,7 +390,13 @@ export default defineConfig({
         {
           text: "node",
           collapsed: false,
-          items: [{ text: "代码块", link: "/code/node/index" }],
+          items: [
+            { text: "代码块", link: "/code/node/index" },
+            {
+              text: "EggJS",
+              link: "/code/node/eggjs",
+            },
+          ],
         },
         {
           text: "java",
