@@ -4,6 +4,8 @@ outline: deep
 
 ## 交叉类型 & 转 联合类型
 
+:::details
+
 ```ts
 // 定义两个接口
 type A = { a: string };
@@ -19,7 +21,11 @@ type Union = keyof Intersection extends infer K ? K extends keyof A ? A : B : ne
 const test: Union = { b: 1 }; // 可以是 { a: 'string' } 或 { b: number }
 ```
 
+:::
+
 ## 联合类型转换交叉类型
+
+:::details
 
 ```ts
 // 定义两个类型
@@ -39,7 +45,11 @@ type Intersection = UnionToIntersection<Union>;
 const test: Intersection = { a: 'hello', b: 42 }; // 必须同时包含 a 和 b
 ```
 
+:::
+
 ## 柯里化函数泛型定义
+
+:::details
 
 ```ts
 type Curried<T extends any[], R> = T extends []
@@ -52,7 +62,11 @@ type Curried<T extends any[], R> = T extends []
 declare function curry<T extends any[], R>(fn: (...args: T) => R): Curried<T, R>;
 ```
 
+:::
+
 ## 指定约束类型
+
+:::details
 
 ```ts
 type BadNumber<T, U> = T extends U ? never : T
@@ -63,3 +77,5 @@ function noNumberType<T>(num: BadNumber<T, number>): void {
 
 noNumberType('12')
 ```
+
+:::

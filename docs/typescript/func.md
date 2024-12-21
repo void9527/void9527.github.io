@@ -2,11 +2,9 @@
 outline: 1, 2
 ---
 
-# 操作符
-## keyof
+## 操作符
 
-> 获取对象类型所有属性名称
-
+### keyof 获取对象类型所有属性名称
 
 ```ts
 type Point = { x: number; y: number };
@@ -15,9 +13,7 @@ type P = keyof Point;
 // "x" | "y"
 ```
 
-## typeof
-
-> 获取变量的类型
+### typeof 获取变量的类型
 
 ```ts
 function foo() {
@@ -31,16 +27,13 @@ type TFoo = typeof foo;
 //  TFoo = () => {   a: number   b: number }
 ```
 
-## extends
-
-> 判断类型是否兼容
+### extends 判断类型是否兼容
 
 ```ts
-type T1 = 1 extends number ? true : false;
-// true
+type T1 = 1 extends number ? true : false; // true
 ```
 
-> 接口继承
+- 接口继承
 
 ```ts
 interface A {
@@ -53,7 +46,7 @@ interface B extends A {
 // { a: number; b: string }
 ```
 
-> 泛型继承
+- 泛型继承
 
 ```ts
 type T1<T> = T extends string ? true : false;
@@ -61,9 +54,9 @@ type T1<T> = T extends string ? true : false;
 // T1<number> = false 
 ```
 
-# 类型工具
+## 类型工具
 
-## ReturnType
+### ReturnType
 
 > 获取函数返回值类型
 

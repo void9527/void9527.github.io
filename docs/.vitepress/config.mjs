@@ -4,11 +4,20 @@ import path from "path";
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
   title: "西羽某某",
-  description: "子标签",
+  description: "记录前端路上的点点滴滴",
   lastUpdated: true,
   lang: "zh-CN",
   head: [
     ["link", { rel: "icon", href: "/favicon.ico" }],
+    ["meta", { name: "subject", content: "前端, 面试题" }],
+    [
+      "meta",
+      {
+        name: "Keywords",
+        content:
+          "前端, js, css, javascript, vue, react, ts, 面试题, node, 小程序",
+      },
+    ],
     [
       "script",
       {
@@ -21,31 +30,32 @@ export default defineConfig({
   base: "/",
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
+    logo: "/logo.svg",
     nav: [
       { text: "首页", link: "/" },
       { text: "环境配置", link: "/other/environment" },
       {
-        text: "代码",
+        text: "代码片段",
         items: [
           {
-            text: "node",
-            link: "/code/node",
-          },
-          {
-            text: "java",
-            link: "/code/java",
-          },
-          {
-            text: "python",
-            link: "/code/python",
-          },
-          {
-            text: "js",
+            text: "JavaScript",
             link: "/code/js",
           },
           {
-            text: "css",
+            text: "CSS",
             link: "/code/css",
+          },
+          {
+            text: "Node",
+            link: "/code/node",
+          },
+          {
+            text: "Java",
+            link: "/code/java",
+          },
+          {
+            text: "Python",
+            link: "/code/python",
           },
         ],
       },
@@ -368,7 +378,6 @@ export default defineConfig({
             { text: "类型推导", link: "/typescript/index" },
             { text: "辅助指令", link: "/typescript/func" },
             { text: "配置文件", link: "/typescript/tsconfig" },
-            { text: "其他", link: "/typescript/qa" },
           ],
         },
         {
@@ -580,6 +589,10 @@ export default defineConfig({
     docFooter: {
       prev: "上一页",
       next: "下一页",
+    },
+    outline: {
+      level: "deep",
+      label: "本页锚点",
     },
   },
   markdown: {
