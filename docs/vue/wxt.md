@@ -91,3 +91,60 @@ outline: deep
 |----|----|
 |Popup|弹窗|
 |Newtab|tab标签|
+
+## 配置文件
+
+:::details manifest.json
+
+```json
+{
+  "manifest_version": 3,
+  "name": "Minimal Manifest",
+  "version": "1.0.0",
+  "description": "A basic example extension with only required keys",
+  "icons": {
+    "48": "images/icon-48.png",
+    "128": "images/icon-128.png"
+  },
+  // 注册内容脚本
+  "content_scripts": [
+    {
+      "js": [
+        "content-script.js"
+      ],
+      "matches": [
+        "http://*.example.com//"
+      ]
+    }
+  ],
+  // 指定包含扩展程序服务工作线程的 JavaScript 文件，该服务工作线程充当事件处理脚本
+  "background": {
+    "service_worker": "service-worker.js"
+  },
+  // 定义 Google 工具栏中扩展程序图标的外观和行为
+  "action": {
+    "default_icon": {
+      "16": "images/icon-16.png",
+      "32": "images/icon-32.png",
+      "48": "images/icon-48.png",
+      "128": "images/icon-128.png"
+    },
+    // 定义弹出框
+    "default_popup": "popup.html"
+  },
+  // 用于标识要在 sidePanel 中显示的 HTML 文件
+  "side_panel": {
+    "default_path": "sidepanel.html"
+  },
+  // 列出您的扩展程序可以与之互动的网页，这些网页是使用网址匹配模式定义的
+  "host_permissions": [
+    "https://*.example.com/"
+  ],
+  // 权限
+  "permissions": ["scripting", "activeTab"],
+  // 在扩展程序中定义键盘快捷键
+  "commands": {}
+}
+```
+
+:::
