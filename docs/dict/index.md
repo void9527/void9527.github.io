@@ -63,20 +63,6 @@ sidebar: false
 | [immer 官网](https://immerjs.github.io/immer/)                            |
 | [ahooks 官网](https://ahooks.js.org/)                                     |
 
-# 编程语言
-
-| 工具名称                                |
-| --------------------------------------- |
-| [go 官网](https://golang.org/)          |
-| [rust 官网](https://www.rust-lang.org/) |
-| [java 官网](https://www.java.com/)      |
-| [php 官网](https://www.php.net/)        |
-| [node 官网](https://nodejs.org/)        |
-| [python 官网](https://www.python.org/)  |
-| [ruby 官网](https://www.ruby-lang.org/) |
-| [perl 官网](https://www.perl.org/)      |
-| [lua 官网](https://www.lua.org/)        |
-
 # 管理工具
 
 | 工具名称                                         | 描述                |
