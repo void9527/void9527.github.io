@@ -606,4 +606,9 @@ export default defineConfig({
       light: "github-light",
     },
   },
+  vite: {
+    server: {
+      port: 9999,
+    },
+  },
 });
