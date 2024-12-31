@@ -346,3 +346,21 @@ V8 引擎是 Google 开发的开源 JavaScript 引擎，主要用于 Chrome 浏�
 
 - 浏览器的跨域限制是为了保护用户数据和隐私，防止恶意攻击。通过同源策略和 CORS 机制，浏览器能够有效地控制跨域请求，确保数据的安全性和合法性。
 :::
+
+## 同源策略
+
+### 同源（域名、协议、端口号） localStorage 会通用吗？如何隔离
+
+:::details
+同源下`localStorage`是会通用的
+
+- 隔离的方式
+  - 添加 key 前缀
+
+  ```javascript
+   // 在 www.abc.com 中存储数据
+   localStorage.setItem('user:key', 'value'); // 用户相关数据
+   localStorage.setItem('admin:key', 'adminValue'); // 管理员相关数据
+  ```
+
+:::
