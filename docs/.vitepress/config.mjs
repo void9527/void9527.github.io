@@ -172,6 +172,24 @@ export default defineConfig({
           text: "微前端",
           link: "/interview/micro_front_end",
         },
+        {
+          text:"工程化",
+          collapsed:false,
+          items:[
+            {
+              text: "rollup",
+              link: "/interview/rollup",
+            },
+            {
+              text: "rollDown",
+              link: "/interview/roll_down",
+            },
+            {
+              text: "esbuild",
+              link: "/interview/esbuild",
+            }
+          ]
+        }
       ],
       "/platform/": [
         {
@@ -609,6 +627,6 @@ export default defineConfig({
   vite: {
     server: {
       port: 9999,
-    },
+    }
   },
 });

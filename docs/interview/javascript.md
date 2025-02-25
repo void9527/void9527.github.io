@@ -393,3 +393,65 @@ ES6 引入的块级作用域主要通过 `let` 和 `const` 关键字来实现，
 - ES6 引入的块级作用域通过 `let` 和 `const` 解决了变量提升、循环作用域、全局变量污染等问题，使得代码更加清晰和可维护。结合 JS 调用栈，块级作用域的引入使得变量的查找和管理更加高效，减少了潜在的错误。
 
 :::
+## Date.now() 与 performance.now()
+:::details
+performance.now() 与 Date.now() 是 JavaScript 中用于获取时间戳的两个方法，但它们在精度、用途和底层实现上有显著区别：
+
+1. 时间起点
+   - Date.now()
+     - 返回自 1970 年 1 月 1 日 00:00:00 UTC（UNIX 纪元） 以来的毫秒数，表示绝对时间点。
+   - performance.now()
+     - 返回从 页面导航开始（即 performance.timing.navigationStart）或 Performance API 初始化 到当前时刻的时间，单位为毫秒（但精度更高）。在 Web Worker 中，起点是 Worker 初始化的时间。
+2. 精度
+   - Date.now()
+     - 精度为 毫秒级（整数），受系统时钟调整（如用户修改时间）影响。
+   - performance.now()
+     - 精度通常为 微秒级（浮点数），且基于单调递增时钟，不受系统时间调整或时钟漂移影响，确保时间差值准确。
+3. 用途
+   - Date.now()
+     - 适用于记录事件发生的绝对时间点（如日志时间戳）。
+   - performance.now()
+     - 专为高精度测量时间间隔设计（如函数执行耗时、动画帧率），适合性能分析和需要稳定增量的场景。
+4. 浏览器支持
+   - Date.now()
+     - 支持广泛（ECMAScript 5+）。
+   - performance.now()
+     - 需较新浏览器（如 IE10+、现代浏览器），在 Web Worker 中可用，但精度可能因浏览器策略（如防安全漏洞）受限。
+5. 返回值示例
+    ```javascript
+      console.log(Date.now());        // 输出类似 1625097600000（整数，毫秒）
+      console.log(performance.now()); // 输出类似 1234.567（浮点数，微秒级）
+    ```
+6. 抗干扰性
+   - Date.now() 受系统时间变化影响，若时钟回拨可能导致负时间差。
+
+   - performance.now() 单调递增，确保时间差始终非负。
+
+> 何时选择？
+
+  - 用 Date.now()：
+    - 需要记录事件发生的绝对时间（如日志、数据存储）。
+  - 用 performance.now()：
+    - 需要精确测量代码性能、动画循环耗时等短期时间间隔，且要求结果不受系统时间干扰。
+> 示例对比
+
+```javascript
+// 使用 Date.now() 可能受系统时间影响
+const dateStart = Date.now();
+doTask();
+const dateEnd = Date.now();
+console.log(`Date 耗时：${dateEnd - dateStart}ms`); // 可能不准（如系统时间被调整）
+
+// 使用 performance.now() 更可靠
+const perfStart = performance.now();
+doTask();
+const perfEnd = performance.now();
+console.log(`Performance 耗时：${perfEnd - perfStart}ms`); // 高精度且稳定
+```
+| 总结      | Date.now()  | 	performance.now() |
+|---------|-------------|--------------------|
+| 时间起点	   | UNIX 纪元     | 	页面导航/Worker 初始化   |
+| 精度      | 	毫秒（整数）	    | 微秒（浮点数，可能受浏览器限制）   |
+| 抗系统时间干扰 | ❌ 受系统时间调整影响 | ✅ 单调递增，不受影响        |
+| 典型用途	   | 记录绝对时间      | 	测量高精度时间间隔         |
+
