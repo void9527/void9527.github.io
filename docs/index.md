@@ -5,9 +5,9 @@
 layout: home
 
 hero:
-  name: "思过崖"
+  name: "help"
   text: "腹有诗书气自华"
-  tagline: 别说大环境不好，是你不行。
+  tagline: ""
   image:
   actions:
     - theme: brand
@@ -17,7 +17,7 @@ hero:
 features:
   - icon: 🛠️
     title: 工程化
-    details: 工程化就是用来解约时间和提高效率
+    details: 工程化是用来解放时间和提高效率
     link: '/engineering/'
   - icon: 🖋
     title: 面试题

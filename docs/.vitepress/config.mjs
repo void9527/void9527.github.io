@@ -1,6 +1,7 @@
 import { defineConfig } from "vitepress";
 import { vitepressDemoPlugin } from "vitepress-demo-plugin";
 import path from "path";
+import { link } from "fs";
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
   title: "西羽某某",
@@ -99,7 +100,6 @@ export default defineConfig({
             text: "Typescript",
             link: "/typescript/index",
           },
-          { text: "工具", link: "/other/index" },
           {
             text: "杂文",
             link: "/other/doc/",
@@ -173,9 +173,9 @@ export default defineConfig({
           link: "/interview/micro_front_end",
         },
         {
-          text:"工程化",
-          collapsed:false,
-          items:[
+          text: "工程化",
+          collapsed: false,
+          items: [
             {
               text: "rollup",
               link: "/interview/rollup",
@@ -187,9 +187,9 @@ export default defineConfig({
             {
               text: "esbuild",
               link: "/interview/esbuild",
-            }
-          ]
-        }
+            },
+          ],
+        },
       ],
       "/platform/": [
         {
@@ -320,7 +320,6 @@ export default defineConfig({
           text: "构建系统",
           collapsed: false,
           link: "/engineering/build",
-          items: [],
         },
         {
           text: "任务运行器",
@@ -383,8 +382,9 @@ export default defineConfig({
           text: "文档生成和管理",
           collapsed: true,
           items: [
-            { text: "JSDoc", link: "https://www.shouce.ren/api/view/a/13308" },
-            { text: "TSDoc", link: "https://typedoc.org/" },
+            { text: "nodejs文档", link: "https://nodejs.cn/" },
+            { text: "TSDoc", link: "https://tsdoc.org/" },
+            { text: "TypeDoc", link: "https://typedoc.org/" },
           ],
         },
       ],
@@ -520,22 +520,12 @@ export default defineConfig({
       ],
       "/other/doc/": [
         {
-          text: "杂文",
+          text: "前端",
           collapsed: false,
           items: [
-            { text: "前端权限模型", link: "/other/doc/permission" },
-            { text: "后端鉴权模型", link: "/other/doc/role" },
-            { text: "数据库中间件", link: "/other/doc/data-base" },
-            { text: "HTML5 新增API", link: "/other/doc/h5" },
-            { text: "WebWorker", link: "/other/doc/webworker" },
-            { text: "虚拟化", link: "other/doc/virtualization" },
             {
-              text: "程序、进程、线程、协程",
-              link: "other/doc/processes_threads_coroutines",
-            },
-            {
-              text: "nodejs与iojs",
-              link: "other/doc/node_iojs",
+              text: ".env文件",
+              link: "other/doc/env文件.md",
             },
           ],
         },
@@ -594,6 +584,26 @@ export default defineConfig({
             },
           ],
         },
+        {
+          text: "杂文",
+          collapsed: false,
+          items: [
+            { text: "前端权限模型", link: "/other/doc/permission" },
+            { text: "后端鉴权模型", link: "/other/doc/role" },
+            { text: "数据库中间件", link: "/other/doc/data-base" },
+            { text: "HTML5 新增API", link: "/other/doc/h5" },
+            { text: "WebWorker", link: "/other/doc/webworker" },
+            { text: "虚拟化", link: "other/doc/virtualization" },
+            {
+              text: "程序、进程、线程、协程",
+              link: "other/doc/processes_threads_coroutines",
+            },
+            {
+              text: "nodejs与iojs",
+              link: "other/doc/node_iojs",
+            },
+          ],
+        },
       ],
     },
 
@@ -627,6 +637,6 @@ export default defineConfig({
   vite: {
     server: {
       port: 9999,
-    }
+    },
   },
 });
