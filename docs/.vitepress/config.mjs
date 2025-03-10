@@ -104,6 +104,10 @@ export default defineConfig({
             text: "杂文",
             link: "/other/doc/",
           },
+          {
+            text: "浏览器",
+            link: "/other/doc/browser/",
+          },
         ],
       },
       {
@@ -484,37 +488,14 @@ export default defineConfig({
           ],
         },
       ],
-      "/other/": [
-        {
-          text: "工具",
-          collapsed: false,
-          items: [
-            { text: "adb", link: "/other/adb" },
-            { text: "brew", link: "/other/brew" },
-            { text: "cargo", link: "/other/environment.html#rust" },
-            { text: "cocoapods", link: "/other/cocoapods" },
-            { text: "git", link: "/other/git" },
-            { text: "nvm", link: "/other/nvm" },
-            { text: "zx", link: "https://google.github.io/zx/getting-started" },
-            {
-              text: "Charles",
-              link: "https://mp.weixin.qq.com/s/9qRcbhW_lW9CMd0hjaT51A",
-            },
-          ],
-        },
-        {
-          text: "AI",
-          collapsed: false,
-          items: [{ text: "UPDF", link: "https://ai.updf.cn/" }],
-        },
+      "/other/doc/browser/": [
         {
           text: "浏览器",
           collapsed: false,
           items: [
-            {
-              text: "Chrome DevTools",
-              link: "https://juejin.cn/post/6844903971677536270?utm_source=gold_browser_extension#heading-28",
-            },
+            { text: "bfCache", link: "/other/doc/browser/bfCache" },
+            { text: "webWorker", link: "/other/doc/browser/webWorker" },
+            { text: "sendBeacon", link: "/other/doc/browser/sendBeacon" },
           ],
         },
       ],
@@ -592,7 +573,6 @@ export default defineConfig({
             { text: "后端鉴权模型", link: "/other/doc/role" },
             { text: "数据库中间件", link: "/other/doc/data-base" },
             { text: "HTML5 新增API", link: "/other/doc/h5" },
-            { text: "WebWorker", link: "/other/doc/webworker" },
             { text: "虚拟化", link: "other/doc/virtualization" },
             {
               text: "程序、进程、线程、协程",
@@ -601,6 +581,40 @@ export default defineConfig({
             {
               text: "nodejs与iojs",
               link: "other/doc/node_iojs",
+            },
+          ],
+        },
+      ],
+      "/other/": [
+        {
+          text: "工具",
+          collapsed: false,
+          items: [
+            { text: "adb", link: "/other/adb" },
+            { text: "brew", link: "/other/brew" },
+            { text: "cargo", link: "/other/environment.html#rust" },
+            { text: "cocoapods", link: "/other/cocoapods" },
+            { text: "git", link: "/other/git" },
+            { text: "nvm", link: "/other/nvm" },
+            { text: "zx", link: "https://google.github.io/zx/getting-started" },
+            {
+              text: "Charles",
+              link: "https://mp.weixin.qq.com/s/9qRcbhW_lW9CMd0hjaT51A",
+            },
+          ],
+        },
+        {
+          text: "AI",
+          collapsed: false,
+          items: [{ text: "UPDF", link: "https://ai.updf.cn/" }],
+        },
+        {
+          text: "浏览器",
+          collapsed: false,
+          items: [
+            {
+              text: "Chrome DevTools",
+              link: "https://juejin.cn/post/6844903971677536270?utm_source=gold_browser_extension#heading-28",
             },
           ],
         },
