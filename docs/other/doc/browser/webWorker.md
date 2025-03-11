@@ -281,3 +281,21 @@ function log(e) {
    ```
 
 :::
+
+## worker 路径
+
+:::details
+:::code-group
+
+```js [main.js]
+
+const worker = new Worker(new URL('./worker.js', import.meta.url));
+
+worker.postMessage('Hello from main thread!');
+
+worker.onmessage = (event) => {
+  console.log('Message from worker:', event.data);
+};
+```
+
+:::
