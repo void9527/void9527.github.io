@@ -34,7 +34,7 @@ export default defineConfig({
     logo: "/logo.svg",
     nav: [
       { text: "首页", link: "/" },
-      { text: "环境配置", link: "/other/environment" },
+      { text: "工具", link: "/other/adb" },
       {
         text: "代码片段",
         items: [
@@ -65,6 +65,7 @@ export default defineConfig({
         items: [
           { text: "简介", link: "/engineering/index" },
           { text: "构建系统", link: "/engineering/build" },
+          { text: "环境配置", link: "/engineering/environment" },
           { text: "任务运行器", link: "/engineering/task" },
           { text: "代码检查和格式化", link: "/engineering/lint" },
           { text: "测试框架", link: "/engineering/test" },
@@ -324,6 +325,12 @@ export default defineConfig({
           text: "构建系统",
           collapsed: false,
           link: "/engineering/build",
+        },
+        {
+          text: "环境配置",
+          collapsed: true,
+          link: "/engineering/environment",
+          items: [],
         },
         {
           text: "任务运行器",
@@ -594,7 +601,21 @@ export default defineConfig({
             { text: "brew", link: "/other/brew" },
             { text: "cargo", link: "/other/environment.html#rust" },
             { text: "cocoapods", link: "/other/cocoapods" },
-            { text: "git", link: "/other/git" },
+            {
+              text: "git",
+              collapsed: true,
+              items: [
+                {
+                  text: "初级",
+                  link: "/other/git",
+                },
+                {
+                  text: "中级",
+                  link: "/other/git-",
+                },
+                { text: "ca-git", link: "/other/cz-git" },
+              ],
+            },
             { text: "nvm", link: "/other/nvm" },
             { text: "zx", link: "https://google.github.io/zx/getting-started" },
             {

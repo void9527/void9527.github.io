@@ -3,11 +3,17 @@ outline: deep
 ---
 # 环境配置
 
-## Nginx
+## .npmrc
 
-:::details
+::: details
 
-```nginx
+|属性|描述|
+|:----|----|
+|cache|缓存目录|
+|registry|仓库地址|
+|prefix|设置全局安装包地址|
+
+```.npmrc
 
 ```
 
@@ -19,6 +25,16 @@ outline: deep
 
 ```dockerfile [.Dockerfile]
 FROM node:18
+```
+
+:::
+
+## Nginx
+
+:::details
+
+```nginx
+
 ```
 
 :::
