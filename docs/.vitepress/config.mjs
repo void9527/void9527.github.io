@@ -611,7 +611,7 @@ export default defineConfig({
                 },
                 {
                   text: "中级",
-                  link: "/other/git-",
+                  link: "/other/git-m",
                 },
                 { text: "ca-git", link: "/other/cz-git" },
               ],
