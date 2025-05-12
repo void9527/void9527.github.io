@@ -13,7 +13,7 @@ outline: deep
 |registry|仓库地址|
 |prefix|设置全局安装包地址|
 
-```.npmrc
+```json
 
 ```
 

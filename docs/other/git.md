@@ -1,6 +1,18 @@
 ---
 outline: deep
 ---
+## 配置 config
+
+|指令|描述|
+|:----|----|
+|--list|列出所有|
+|--show-origin|显示文件地址|
+
+### 查看所有的配置
+
+```bash
+git config --list --show-origin
+```
 
 ## 暂存
 

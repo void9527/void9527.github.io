@@ -342,7 +342,10 @@ export default defineConfig({
           text: "代码检查和格式化",
           collapsed: true,
           link: "/engineering/lint",
-          items: [],
+          items: [{
+            text:"Prettier",
+            link:"/engineering/lint/prettier"
+          }],
         },
         {
           text: "体验优化",
