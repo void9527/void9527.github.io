@@ -84,6 +84,7 @@ export default defineConfig({
           { text: "Pinia", link: "/vue/pinia" },
           { text: "Nuxt", link: "/vue/nuxt" },
           { text: "Wxt", link: "/vue/wxt" },
+          { text: "高级API", link: "/vue/api" },
         ],
       },
       {
@@ -342,10 +343,12 @@ export default defineConfig({
           text: "代码检查和格式化",
           collapsed: true,
           link: "/engineering/lint",
-          items: [{
-            text:"Prettier",
-            link:"/engineering/lint/prettier"
-          }],
+          items: [
+            {
+              text: "Prettier",
+              link: "/engineering/lint/prettier",
+            },
+          ],
         },
         {
           text: "体验优化",

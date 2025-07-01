@@ -692,3 +692,158 @@ const id = useId()
   </form>
 </template>
 ```
+
+```js
+import {
+  ref,
+  customRef,
+  watchEffect,
+  computed,
+  shallowRef,
+  readonly,
+} from "vue";
+
+/**
+ * 创建带有自定义 getter/setter 逻辑的响应式引用
+ * 这是 track/trigger 的安全替代方案
+ */
+export function useCustomReactive(getter, setter) {
+  return customRef((track, trigger) => ({
+    get() {
+      track();
+      return getter();
+    },
+    set(newValue) {
+      setter(newValue);
+      trigger();
+    },
+  }));
+}
+
+/**
+ * 创建防抖响应式引用
+ */
+export function useDebouncedRef(value, delay = 200) {
+  let timeout;
+  let _value = value;
+
+  return customRef((track, trigger) => ({
+    get() {
+      track();
+      return _value;
+    },
+    set(newValue) {
+      clearTimeout(timeout);
+      timeout = setTimeout(() => {
+        _value = newValue;
+        trigger();
+      }, delay);
+    },
+  }));
+}
+
+/**
+ * 创建可以手动控制更新的响应式状态
+ */
+export function useManualReactive(initialValue) {
+  const state = shallowRef(initialValue);
+  const triggerUpdate = ref(0);
+
+  // 使用计算属性来创建依赖关系
+  const reactiveValue = computed(() => {
+    // 访问 triggerUpdate 来建立依赖
+    triggerUpdate.value;
+    return state.value;
+  });
+
+  const setValue = (newValue) => {
+    state.value = newValue;
+    // 手动触发更新
+    triggerUpdate.value++;
+  };
+
+  const forceUpdate = () => {
+    triggerUpdate.value++;
+  };
+
+  return {
+    value: reactiveValue,
+    setValue,
+    forceUpdate,
+  };
+}
+
+/**
+ * 创建与外部存储同步的响应式状态
+ */
+export function useExternalSync(key, storage = localStorage) {
+  const getStoredValue = () => {
+    try {
+      const item = storage.getItem(key);
+      return item ? JSON.parse(item) : null;
+    } catch {
+      return null;
+    }
+  };
+
+  const setStoredValue = (value) => {
+    try {
+      storage.setItem(key, JSON.stringify(value));
+    } catch (error) {
+      console.warn("Failed to save to storage:", error);
+    }
+  };
+
+  return customRef((track, trigger) => ({
+    get() {
+      track();
+      return getStoredValue();
+    },
+    set(newValue) {
+      setStoredValue(newValue);
+      trigger();
+    },
+  }));
+}
+
+/**
+ * 创建可以批量更新的响应式状态
+ */
+export function useBatchReactive(initialState = {}) {
+  const state = ref({ ...initialState });
+  const pendingUpdates = ref({});
+  let updateTimeout = null;
+
+  const queueUpdate = (key, value) => {
+    pendingUpdates.value[key] = value;
+
+    if (updateTimeout) {
+      clearTimeout(updateTimeout);
+    }
+
+    updateTimeout = setTimeout(() => {
+      // 批量应用更新
+      Object.assign(state.value, pendingUpdates.value);
+      pendingUpdates.value = {};
+      updateTimeout = null;
+    }, 0);
+  };
+
+  const flushUpdates = () => {
+    if (updateTimeout) {
+      clearTimeout(updateTimeout);
+      Object.assign(state.value, pendingUpdates.value);
+      pendingUpdates.value = {};
+      updateTimeout = null;
+    }
+  };
+
+  return {
+    state: readonly(state),
+    queueUpdate,
+    flushUpdates,
+    setProp: (key, value) => queueUpdate(key, value),
+  };
+}
+
+```
