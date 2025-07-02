@@ -2,379 +2,360 @@
 outline: deep
 ---
 
-# Vue3 内置的高级API
+# Vue3 官方 API 参考
 
-## track()
+## 响应式核心 API
 
-手动跟踪一个依赖。这是一个底层API，通常用于自定义响应式实现。
+### reactive()
+
+接受一个对象 (不论是否嵌套) 并创建一个响应式代理。
 
 ```js
-import { track, trigger, ref } from 'vue'
+import { reactive } from 'vue'
 
-// 创建一个自定义的响应式实现
-function createCustomReactive(target, key) {
-  let value = target[key]
-  
-  return {
-    get() {
-      // 手动跟踪依赖
-      track(target, 'get', key)
-      return value
-    },
-    set(newValue) {
-      if (value !== newValue) {
-        value = newValue
-        // 手动触发更新
-        trigger(target, 'set', key, newValue)
-      }
-    }
-  }
-}
+const obj = reactive({ count: 0 })
+obj.count++
 ```
 
-## trackScope()
+### ref()
 
-跟踪当前作用域中的所有依赖收集，用于调试响应式系统。
-
-```js
-import { trackScope, ref, computed } from 'vue'
-
-function debugReactivity() {
-  const count = ref(0)
-  
-  // 开始跟踪作用域
-  const scope = trackScope(() => {
-    const doubled = computed(() => count.value * 2)
-    return doubled.value
-  })
-  
-  console.log('依赖跟踪信息:', scope)
-}
-```
-
-## trackOptions()
-
-配置依赖跟踪的选项，可以用于优化性能或调试。
+接受一个内部值，返回一个响应式的、可更改的 ref 对象，此对象只有一个指向其内部值的属性 `.value`。
 
 ```js
-import { trackOptions, ref, watchEffect } from 'vue'
-
-// 配置跟踪选项
-trackOptions({
-  // 启用调试模式
-  debug: true,
-  // 设置最大跟踪深度
-  maxDepth: 10,
-  // 自定义跟踪回调
-  onTrack(event) {
-    console.log('依赖被跟踪:', event)
-  }
-})
+import { ref } from 'vue'
 
 const count = ref(0)
+console.log(count.value) // 0
+
+count.value = 1
+console.log(count.value) // 1
+```
+
+### computed()
+
+接受一个 getter 函数，返回一个只读的响应式 ref 对象。该 ref 通过 `.value` 暴露 getter 函数的返回值。
+
+```js
+import { ref, computed } from 'vue'
+
+const count = ref(1)
+const plusOne = computed(() => count.value + 1)
+
+console.log(plusOne.value) // 2
+
+// 可写的计算属性
+const writableComputed = computed({
+  get: () => count.value + 1,
+  set: (val) => {
+    count.value = val - 1
+  }
+})
+```
+
+### readonly()
+
+接受一个对象 (不论是否是响应式的) 或是一个 ref，返回一个原值的只读代理。
+
+```js
+import { reactive, readonly } from 'vue'
+
+const original = reactive({ count: 0 })
+const copy = readonly(original)
+
+copy.count++ // 警告!
+```
+
+### watchEffect()
+
+侦听响应式数据的变化并自动执行副作用函数。**立即执行**一次，然后在其依赖项发生变化时重新执行。
+
+```js
+import { ref, watchEffect } from 'vue'
+
+const count = ref(0)
+
+// 立即执行一次，然后在 count 变化时重新执行
 watchEffect(() => {
-  console.log(count.value) // 这里的依赖跟踪会被记录
+  console.log('count 是:', count.value)
+})
+// -> 立即输出 "count 是: 0"
+
+count.value++
+// -> 输出 "count 是: 1"
+
+// 停止侦听器
+const stop = watchEffect(() => {
+  /* ... */
+})
+
+// 当不再需要此侦听器时
+stop()
+```
+
+**特点：**
+- ✅ **自动依赖收集**：自动追踪回调函数中使用的响应式数据
+- ✅ **立即执行**：创建时立即执行一次
+- ❌ **无法获取旧值**：只能访问当前值
+
+### watch()
+
+侦听一个或多个响应式数据源，并在数据源变化时调用所给的回调函数。**默认不立即执行**，只在数据变化时执行。
+
+```js
+import { ref, watch } from 'vue'
+
+const count = ref(0)
+
+// 侦听单个来源 - 默认不立即执行
+watch(count, (newValue, oldValue) => {
+  console.log(`count 从 ${oldValue} 变为 ${newValue}`)
+})
+
+count.value++
+// -> 输出 "count 从 0 变为 1"
+
+// 侦听多个来源
+const firstName = ref('')
+const lastName = ref('')
+
+watch([firstName, lastName], ([newFirst, newLast], [oldFirst, oldLast]) => {
+  console.log(`名字从 "${oldFirst} ${oldLast}" 变为 "${newFirst} ${newLast}"`)
+})
+
+// 设置 immediate: true - 立即执行一次
+watch(count, (newValue, oldValue) => {
+  console.log(`count 现在是: ${newValue}, 之前是: ${oldValue}`)
+}, { immediate: true })
+// -> 立即输出 "count 现在是: 1, 之前是: undefined"
+```
+
+**特点：**
+- ✅ **显式依赖声明**：明确指定要侦听的数据源
+- ✅ **可获取新旧值**：回调函数提供新值和旧值
+- ⚙️ **可配置是否立即执行**：通过 `immediate` 选项控制
+- ⚙️ **深度侦听**：通过 `deep` 选项控制
+
+## `watchEffect` vs `watch` 详细对比
+
+| 特性 | `watchEffect` | `watch` | `watch + immediate: true` |
+|------|---------------|---------|---------------------------|
+| **依赖收集** | 自动收集 | 手动指定 | 手动指定 |
+| **立即执行** | ✅ 总是立即执行 | ❌ 默认不执行 | ✅ 立即执行 |
+| **获取旧值** | ❌ 无法获取 | ✅ 可以获取 | ✅ 可以获取 |
+| **首次执行时的旧值** | - | - | `undefined` |
+| **语法简洁性** | 更简洁 | 更明确 | 更明确 |
+
+### 使用场景对比
+
+**使用 `watchEffect` 当：**
+```js
+import { ref, watchEffect } from 'vue'
+
+const url = ref('https://api.example.com/users/1')
+const data = ref(null)
+
+// 自动依赖收集，代码简洁
+watchEffect(async () => {
+  const response = await fetch(url.value)
+  data.value = await response.json()
+})
+// 立即执行，获取初始数据
+```
+
+**使用 `watch` 当：**
+```js
+import { ref, watch } from 'vue'
+
+const searchTerm = ref('')
+const searchResults = ref([])
+
+// 需要对比新旧值，避免不必要的请求
+watch(searchTerm, (newTerm, oldTerm) => {
+  if (newTerm !== oldTerm && newTerm.length > 2) {
+    searchResults.value = performSearch(newTerm)
+  }
 })
 ```
 
-## trigger()
+**使用 `watch + immediate: true` 当：**
+```js
+import { ref, watch } from 'vue'
 
-手动触发依赖更新。这是响应式系统的核心API之一。
+const userId = ref(1)
+const userProfile = ref(null)
+
+// 需要立即执行 + 获取新旧值进行对比
+watch(userId, async (newId, oldId) => {
+  console.log(`用户ID从 ${oldId} 变为 ${newId}`)
+  userProfile.value = await fetchUserProfile(newId)
+}, { immediate: true })
+// -> 立即输出 "用户ID从 undefined 变为 1"
+```
+
+### 性能考虑
 
 ```js
-import { trigger, track, ref } from 'vue'
+import { ref, watch, watchEffect } from 'vue'
 
-// 创建一个自定义的响应式Map
-class ReactiveMap {
-  constructor() {
-    this._map = new Map()
-    this._target = {}
-  }
-  
-  get(key) {
-    // 跟踪依赖
-    track(this._target, 'get', key)
-    return this._map.get(key)
-  }
-  
-  set(key, value) {
-    const hadKey = this._map.has(key)
-    const oldValue = this._map.get(key)
-    
-    this._map.set(key, value)
-    
-    // 触发更新
-    if (!hadKey) {
-      trigger(this._target, 'add', key, value)
-    } else if (value !== oldValue) {
-      trigger(this._target, 'set', key, value, oldValue)
-    }
-  }
-}
+const a = ref(1)
+const b = ref(2) 
+const c = ref(3)
 
-// 使用示例
-const reactiveMap = new ReactiveMap()
+// watchEffect: 自动依赖收集，可能收集不必要的依赖
 watchEffect(() => {
-  console.log('user name:', reactiveMap.get('user'))
+  if (a.value > 0) {
+    console.log(b.value) // b 被收集为依赖
+  }
+  // 即使 a.value <= 0，b 的变化仍会触发此函数
 })
 
-reactiveMap.set('user', 'Alice') // 会触发watchEffect
+// watch: 精确控制依赖
+watch([a, b], ([newA, newB]) => {
+  if (newA > 0) {
+    console.log(newB)
+  }
+  // 只有 a 或 b 变化时才触发
+})
 ```
 
-## effectScope()
+## 响应式工具函数
 
-创建一个effect作用域，用于批量管理副作用的生命周期。
+### isRef()
 
-```js
-import { effectScope, ref, watchEffect, computed } from 'vue'
-
-function useFeature() {
-  const scope = effectScope()
-  
-  return scope.run(() => {
-    const count = ref(0)
-    const doubled = computed(() => count.value * 2)
-    
-    // 这个watchEffect会被包含在scope中
-    watchEffect(() => {
-      console.log('count:', count.value)
-    })
-    
-    // 返回清理函数
-    return {
-      count,
-      doubled,
-      cleanup: () => scope.stop() // 停止所有副作用
-    }
-  })
-}
-
-// 使用
-const feature = useFeature()
-feature.count.value = 10
-
-// 清理所有副作用
-feature.cleanup()
-```
-
-## effect()
-
-创建一个响应式副作用函数。这是watchEffect的底层实现。
+检查某个值是否为 ref。
 
 ```js
-import { effect, ref, stop } from 'vue'
+import { ref, isRef } from 'vue'
 
 const count = ref(0)
-const name = ref('Vue')
+console.log(isRef(count)) // true
+console.log(isRef(0)) // false
+```
 
-// 创建一个响应式副作用
-const runner = effect(() => {
-  console.log(`${name.value} count: ${count.value}`)
-}, {
-  // 配置选项
-  lazy: false, // 是否延迟执行
-  scheduler: (job) => {
-    // 自定义调度器
-    setTimeout(job, 100) // 延迟100ms执行
-  },
-  onTrack(event) {
-    console.log('跟踪:', event)
-  },
-  onTrigger(event) {
-    console.log('触发:', event)
-  }
+### unref()
+
+如果参数是 ref，则返回内部值，否则返回参数本身。这是 `val = isRef(val) ? val.value : val` 计算的一个语法糖。
+
+```js
+import { ref, unref } from 'vue'
+
+const count = ref(1)
+console.log(unref(count)) // 1
+console.log(unref(1)) // 1
+```
+
+### toRef()
+
+基于响应式对象的一个属性，创建一个对应的 ref。这样创建的 ref 与其源属性保持同步。
+
+```js
+import { reactive, toRef } from 'vue'
+
+const state = reactive({
+  foo: 1,
+  bar: 2
 })
 
-count.value++ // 会触发effect，但延迟100ms执行
+const fooRef = toRef(state, 'foo')
 
-// 手动执行effect
-runner()
+// 更改该 ref 会更新源属性
+fooRef.value++
+console.log(state.foo) // 2
 
-// 停止effect
-stop(runner)
+// 更改源属性也会更新该 ref
+state.foo++
+console.log(fooRef.value) // 3
 ```
 
-## watchEffect()
+### toRefs()
 
-立即运行一个函数，同时响应式地追踪其依赖，并在依赖更改时重新执行。
+将一个响应式对象转换为一个普通对象，这个普通对象的每个属性都是指向源对象相应属性的 ref。
 
 ```js
-import { watchEffect, ref, nextTick } from 'vue'
+import { reactive, toRefs } from 'vue'
 
-const count = ref(0)
-const enabled = ref(true)
-
-// 基本用法
-const stop1 = watchEffect(() => {
-  if (enabled.value) {
-    console.log('count is:', count.value)
-  }
+const state = reactive({
+  foo: 1,
+  bar: 2
 })
 
-// 带选项的用法
-const stop2 = watchEffect(
-  () => {
-    console.log('DOM updated, count:', count.value)
-  },
-  {
-    flush: 'post', // 'pre' | 'sync' | 'post'
-    onTrack(e) {
-      console.log('跟踪依赖:', e)
-    },
-    onTrigger(e) {
-      console.log('触发更新:', e)
-    }
-  }
-)
+const stateAsRefs = toRefs(state)
+// stateAsRefs 的类型：{ foo: Ref<number>, bar: Ref<number> }
 
-// 异步清理
-const stop3 = watchEffect(async (onCleanup) => {
-  const response = await fetch(`/api/count/${count.value}`)
-  const data = await response.json()
-  
-  // 注册清理函数
-  onCleanup(() => {
-    // 取消请求或清理资源
-    console.log('清理副作用')
-  })
-  
-  console.log('数据:', data)
-})
+// 这个 ref 和源属性已经"链接上了"
+state.foo++
+console.log(stateAsRefs.foo.value) // 2
 
-// 停止监听
-// stop1()
-// stop2()
-// stop3()
+stateAsRefs.foo.value++
+console.log(state.foo) // 3
 ```
 
-## provide()
+### isReactive()
 
-提供一个值，可以被后代组件通过inject()注入。
+检查一个对象是否是由 `reactive()` 或 `shallowReactive()` 创建的代理。
 
 ```js
-import { provide, ref, readonly } from 'vue'
+import { reactive, isReactive } from 'vue'
 
-// 在父组件中
-export default {
-  setup() {
-    const theme = ref('dark')
-    const user = ref({ name: 'Alice', role: 'admin' })
-    
-    // 提供响应式数据
-    provide('theme', theme)
-    
-    // 提供只读数据，防止子组件修改
-    provide('user', readonly(user))
-    
-    // 提供方法
-    provide('updateTheme', (newTheme) => {
-      theme.value = newTheme
-    })
-    
-    // 使用Symbol作为key，避免命名冲突
-    const ThemeSymbol = Symbol('theme')
-    provide(ThemeSymbol, theme)
-    
-    return {
-      theme,
-      user,
-      ThemeSymbol
-    }
-  }
-}
-
-// 在子组件中使用inject()
-import { inject } from 'vue'
-
-export default {
-  setup() {
-    const theme = inject('theme')
-    const user = inject('user')
-    const updateTheme = inject('updateTheme')
-    
-    // 带默认值的注入
-    const config = inject('config', { apiUrl: '/api' })
-    
-    // 注入可选值
-    const optionalValue = inject('optional', null)
-    
-    return {
-      theme,
-      user,
-      updateTheme,
-      config
-    }
-  }
-}
+const state = reactive({ count: 0 })
+console.log(isReactive(state)) // true
 ```
 
-## inject()
+### isReadonly()
 
-注入一个由provide()提供的值。
+检查传入的值是否为只读对象。
 
 ```js
-import { inject } from 'vue'
+import { reactive, readonly, isReadonly } from 'vue'
 
-export default {
-  setup() {
-    const theme = inject('theme')
-    const user = inject('user')
-    const updateTheme = inject('updateTheme')
-    
-    // 带默认值的注入
-    const config = inject('config', { apiUrl: '/api' })
-    
-    // 注入可选值
-    const optionalValue = inject('optional', null)
-    
-    return {
-      theme,
-      user,
-      updateTheme,
-      config
-    }
-  }
-}
+const state = reactive({ count: 0 })
+const readonlyState = readonly(state)
+
+console.log(isReadonly(readonlyState)) // true
+console.log(isReadonly(state)) // false
 ```
 
-## customRef()
+### isProxy()
 
-创建一个自定义的 ref，可以用于自定义响应式逻辑。
+检查一个对象是否是由 `reactive()`、`readonly()`、`shallowReactive()` 或 `shallowReadonly()` 创建的代理。
 
 ```js
-import { customRef } from 'vue'
+import { reactive, readonly, isProxy } from 'vue'
 
-function useCustomRef() {
-  const value = ref(0)
-  
-  const customRef = customRef((track, trigger) => {
-    return {
-      get() {
-        track()
-        return value.value
-      },
-      set(newValue) {
-        value.value = newValue
-        trigger()
-      }
-    }
-  })
-  
-  return customRef
-}
+const state = reactive({ count: 0 })
+const readonlyState = readonly(state)
 
-const customRef = useCustomRef()
-console.log(customRef.value) // 0
-customRef.value = 1
-console.log(customRef.value) // 1
+console.log(isProxy(state)) // true
+console.log(isProxy(readonlyState)) // true
 ```
 
-## shallowRef()
+## 响应式进阶 API
 
-创建一个浅层 ref，用于创建浅层响应式对象。
+### shallowRef()
+
+`ref()` 的浅层作用形式。
 
 ```js
-import { shallowRef } from 'vue'
+import { shallowRef, triggerRef } from 'vue'
+
+const state = shallowRef({ count: 1 })
+
+// 不会触发更改
+state.value.count = 2
+
+// 会触发更改
+state.value = { count: 2 }
+
+// 手动触发
+triggerRef(state)
+```
+
+### triggerRef()
+
+强制触发依赖于一个浅层 ref 的副作用，这通常在对浅引用的内部值进行深度变更后使用。
+
+```js
+import { shallowRef, triggerRef } from 'vue'
 
 const shallow = shallowRef({
   greet: 'Hello, world'
@@ -392,132 +373,98 @@ shallow.value.greet = 'Hello, universe'
 triggerRef(shallow)
 ```
 
-## getCurrentScope()
+### customRef()
 
-返回当前活跃的 effect 作用域。用于调试和高级用例。
-
-```js
-import { getCurrentScope, effectScope } from 'vue'
-
-const scope = effectScope()
-scope.run(() => {
-  console.log(getCurrentScope() === scope) // true
-})
-```
-
-## onScopeDispose()
-
-在当前活跃的 effect 作用域上注册一个处理回调函数。当相关的 effect 作用域停止时会调用这个回调函数。
+创建一个自定义的 ref，显式声明对其依赖追踪和更新触发的控制方式。
 
 ```js
-import { onScopeDispose, effectScope } from 'vue'
+import { customRef } from 'vue'
 
-const scope = effectScope()
-scope.run(() => {
-  onScopeDispose(() => {
-    console.log('scope disposed')
+function useDebouncedRef(value, delay = 200) {
+  let timeout
+  return customRef((track, trigger) => {
+    return {
+      get() {
+        track()
+        return value
+      },
+      set(newValue) {
+        clearTimeout(timeout)
+        timeout = setTimeout(() => {
+          value = newValue
+          trigger()
+        }, delay)
+      }
+    }
   })
+}
+
+// 在组件中使用
+const debouncedText = useDebouncedRef('hello')
+```
+
+### shallowReactive()
+
+`reactive()` 的浅层作用形式。
+
+```js
+import { shallowReactive } from 'vue'
+
+const state = shallowReactive({
+  foo: 1,
+  nested: {
+    bar: 2
+  }
 })
 
-scope.stop() // 'scope disposed'
+// 更改状态自身的属性是响应式的
+state.foo++
+
+// ...但下层嵌套对象不会被转为响应式
+isReactive(state.nested) // false
+
+// 不是响应式的
+state.nested.bar++
 ```
 
-## unref()
+### shallowReadonly()
 
-如果参数是 ref，则返回内部值，否则返回参数本身。这是 `val = isRef(val) ? val.value : val` 的语法糖函数。
+`readonly()` 的浅层作用形式。
 
 ```js
-import { unref, ref } from 'vue'
+import { shallowReadonly } from 'vue'
 
-const count = ref(1)
-console.log(unref(count)) // 1
-console.log(unref(1)) // 1
+const state = shallowReadonly({
+  foo: 1,
+  nested: {
+    bar: 2
+  }
+})
+
+// 更改状态自身的属性会失败
+state.foo++
+
+// ...但可以更改下层嵌套对象
+isReadonly(state.nested) // false
+
+// 这是可以更改的
+state.nested.bar++
 ```
 
-## toValue()
-
-将值、refs 或 getters 规范化为值。这与 unref() 类似，不同的是此函数也会规范化 getter 函数。
-
-```js
-import { toValue, ref, computed } from 'vue'
-
-const count = ref(1)
-const getter = () => count.value * 2
-
-console.log(toValue(count)) // 1
-console.log(toValue(getter)) // 2
-console.log(toValue(1)) // 1
-```
-
-## isRef()
-
-检查某个值是否为 ref。
-
-```js
-import { isRef, ref } from 'vue'
-
-const count = ref(1)
-console.log(isRef(count)) // true
-console.log(isRef(1)) // false
-```
-
-## isReactive()
-
-检查一个对象是否是由 reactive()、readonly()、shallowReactive() 或 shallowReadonly() 创建的代理。
-
-```js
-import { isReactive, reactive, readonly } from 'vue'
-
-const state = reactive({ count: 1 })
-const readonlyState = readonly(state)
-
-console.log(isReactive(state)) // true
-console.log(isReactive(readonlyState)) // false
-```
-
-## isReadonly()
-
-检查传入的值是否为只读对象。
-
-```js
-import { isReadonly, readonly, reactive } from 'vue'
-
-const state = reactive({ count: 1 })
-const readonlyState = readonly(state)
-
-console.log(isReadonly(state)) // false
-console.log(isReadonly(readonlyState)) // true
-```
-
-## isProxy()
-
-检查一个对象是否是由 reactive()、readonly()、shallowReactive() 或 shallowReadonly() 创建的代理。
-
-```js
-import { isProxy, reactive, readonly } from 'vue'
-
-const state = reactive({ count: 1 })
-const readonlyState = readonly(state)
-
-console.log(isProxy(state)) // true
-console.log(isProxy(readonlyState)) // true
-console.log(isProxy({})) // false
-```
-
-## toRaw()
+### toRaw()
 
 根据一个 Vue 创建的代理返回其原始对象。
 
 ```js
-import { toRaw, reactive } from 'vue'
+import { reactive, toRaw } from 'vue'
 
-const original = { count: 1 }
-const state = reactive(original)
+const foo = {}
+const reactiveFoo = reactive(foo)
 
-console.log(toRaw(state) === original) // true
+console.log(toRaw(reactiveFoo) === foo) // true
 ```
 
-## markRaw()
+### markRaw()
 
 将一个对象标记为不可被转为代理。返回该对象本身。
 
@@ -525,95 +472,182 @@ console.log(toRaw(state) === original) // true
 import { markRaw, reactive } from 'vue'
 
 const foo = markRaw({})
-const state = reactive({ foo })
+console.log(isReactive(reactive(foo))) // false
 
-console.log(isReactive(state.foo)) // false
+// 也适用于嵌套在其他响应性对象
+const bar = reactive({ foo })
+console.log(isReactive(bar.foo)) // false
 ```
 
-## triggerRef()
+### effectScope()
 
-强制触发依赖于一个浅层 ref 的副作用，这通常在对浅引用的内部值进行深度变更后使用。
+创建一个 effect 作用域，可以捕获其中所创建的响应式副作用 (即计算属性和侦听器)。
 
 ```js
-import { triggerRef, shallowRef } from 'vue'
+import { effectScope, ref, computed } from 'vue'
 
-const shallow = shallowRef({
-  greet: 'Hello, world'
+const scope = effectScope()
+
+scope.run(() => {
+  const doubled = computed(() => counter.value * 2)
+  
+  watch(doubled, () => console.log(doubled.value))
+  
+  watchEffect(() => console.log('Count: ', doubled.value))
 })
 
-// 第一次运行时记录一次 "Hello, world"
-watchEffect(() => {
-  console.log(shallow.value.greet)
-})
-
-// 这次变更不会触发副作用，因为这个 ref 是浅层的
-shallow.value.greet = 'Hello, universe'
-
-// 记录 "Hello, universe"
-triggerRef(shallow)
+// 处理掉当前作用域内的所有 effect
+scope.stop()
 ```
 
-## proxyRefs()
+### getCurrentScope()
 
-让我们可以把一个对象的所有属性都转换为 ref，并且自动解包。
+如果有的话，返回当前活跃的 effect 作用域。
 
 ```js
-import { proxyRefs, ref } from 'vue'
+import { getCurrentScope } from 'vue'
 
-const count = ref(1)
-const name = ref('Vue')
-
-const proxy = proxyRefs({
-  count,
-  name,
-  msg: 'hello'
-})
-
-console.log(proxy.count) // 1 (自动解包)
-console.log(proxy.name) // 'Vue' (自动解包)
-console.log(proxy.msg) // 'hello'
-
-proxy.count = 2 // 等价于 count.value = 2
-console.log(count.value) // 2
+const scope = getCurrentScope()
 ```
 
-## defineAsyncComponent()
+### onScopeDispose()
 
-定义一个异步组件，它在运行时是懒加载的。
+在当前活跃的 effect 作用域上注册一个处理回调函数。当相关的 effect 作用域停止时会调用这个回调函数。
 
 ```js
-import { defineAsyncComponent } from 'vue'
+import { onScopeDispose } from 'vue'
 
-// 简单用法
-const AsyncComp = defineAsyncComponent(() => import('./MyComponent.vue'))
-
-// 带选项的用法
-const AsyncCompWithOptions = defineAsyncComponent({
-  loader: () => import('./MyComponent.vue'),
-  loadingComponent: LoadingComponent,
-  errorComponent: ErrorComponent,
-  delay: 200,
-  timeout: 3000
+onScopeDispose(() => {
+  console.log('scope disposed')
 })
 ```
 
-## defineCustomElement()
+## 生命周期钩子
 
-创建一个自定义元素类，该类可以在任何使用原生自定义元素 API 的地方使用。
+### onMounted()
+
+注册一个回调函数，在组件挂载完成后执行。
 
 ```js
-import { defineCustomElement } from 'vue'
-import MyVueComponent from './MyVueComponent.vue'
+import { onMounted } from 'vue'
 
-const MyElement = defineCustomElement(MyVueComponent)
-
-// 注册自定义元素
-customElements.define('my-element', MyElement)
+onMounted(() => {
+  console.log('组件已挂载')
+})
 ```
 
-## useSlots()
+### onUpdated()
 
-返回一个等价于 setupContext.slots 的对象。
+注册一个回调函数，在组件因为响应式状态变更而更新其 DOM 树之后调用。
+
+```js
+import { onUpdated } from 'vue'
+
+onUpdated(() => {
+  // 访问更新后的 DOM
+})
+```
+
+### onUnmounted()
+
+注册一个回调函数，在组件实例被卸载之后调用。
+
+```js
+import { onUnmounted } from 'vue'
+
+onUnmounted(() => {
+  console.log('组件已卸载')
+})
+```
+
+### onBeforeMount()
+
+注册一个钩子，在组件被挂载之前被调用。
+
+```js
+import { onBeforeMount } from 'vue'
+
+onBeforeMount(() => {
+  console.log('组件即将挂载')
+})
+```
+
+### onBeforeUpdate()
+
+注册一个钩子，在组件即将因为响应式状态变更而更新其 DOM 树之前调用。
+
+```js
+import { onBeforeUpdate } from 'vue'
+
+onBeforeUpdate(() => {
+  console.log('组件即将更新')
+})
+```
+
+### onBeforeUnmount()
+
+注册一个钩子，在组件实例被卸载之前调用。
+
+```js
+import { onBeforeUnmount } from 'vue'
+
+onBeforeUnmount(() => {
+  console.log('组件即将卸载')
+})
+```
+
+### onErrorCaptured()
+
+注册一个钩子，在捕获了后代组件传递的错误时调用。
+
+```js
+import { onErrorCaptured } from 'vue'
+
+onErrorCaptured((err, instance, info) => {
+  console.log('捕获错误:', err)
+  return false // 阻止错误继续传播
+})
+```
+
+## 依赖注入
+
+### provide()
+
+提供一个值，可以被后代组件注入。
+
+```js
+import { provide, ref } from 'vue'
+
+// 提供静态值
+provide('message', 'hello')
+
+// 提供响应式的值
+const count = ref(0)
+provide('count', count)
+```
+
+### inject()
+
+注入一个由祖先组件或整个应用 (通过 `app.provide()`) 提供的值。
+
+```js
+import { inject } from 'vue'
+
+// 注入不含默认值的静态值
+const message = inject('message')
+
+// 注入含默认值的值
+const count = inject('count', 0)
+
+// 注入工厂函数
+const fn = inject('function', () => {})
+```
+
+## 组合式函数辅助
+
+### useSlots()
+
+返回 slots 对象。
 
 ```js
 import { useSlots } from 'vue'
@@ -632,9 +666,9 @@ export default {
 }
 ```
 
-## useAttrs()
+### useAttrs()
 
-返回一个等价于 setupContext.attrs 的对象。
+返回 attrs 对象。
 
 ```js
 import { useAttrs } from 'vue'
@@ -648,7 +682,23 @@ export default {
 }
 ```
 
-## useCssModule()
+### useId()
+
+用于生成应用内唯一的元素 ID。
+
+```js
+import { useId } from 'vue'
+
+export default {
+  setup() {
+    const id = useId()
+    
+    return { id }
+  }
+}
+```
+
+### useCssModule()
 
 在单文件组件的 `<script setup>` 中访问 CSS 模块。
 
@@ -663,7 +713,7 @@ import { useCssModule } from 'vue'
 // 默认, 返回 <style module> 的 class
 const style = useCssModule()
 
-// 具名模块, 返回 <style module="classes"> 的 class  
+// 具名, 返回 <style module="classes"> 的 class  
 const classes = useCssModule('classes')
 </script>
 
@@ -674,176 +724,99 @@ const classes = useCssModule('classes')
 </style>
 ```
 
-## useId()
+## 高级功能
 
-用于生成应用内唯一的元素 ID。
+### nextTick()
 
-```vue
-<script setup>
-import { useId } from 'vue'
-
-const id = useId()
-</script>
-
-<template>
-  <form>
-    <label :for="id">Name:</label>
-    <input :id="id" type="text" />
-  </form>
-</template>
-```
+等待下一次 DOM 更新刷新的工具方法。
 
 ```js
-import {
-  ref,
-  customRef,
-  watchEffect,
-  computed,
-  shallowRef,
-  readonly,
-} from "vue";
+import { nextTick } from 'vue'
 
-/**
- * 创建带有自定义 getter/setter 逻辑的响应式引用
- * 这是 track/trigger 的安全替代方案
- */
-export function useCustomReactive(getter, setter) {
-  return customRef((track, trigger) => ({
-    get() {
-      track();
-      return getter();
-    },
-    set(newValue) {
-      setter(newValue);
-      trigger();
-    },
-  }));
-}
-
-/**
- * 创建防抖响应式引用
- */
-export function useDebouncedRef(value, delay = 200) {
-  let timeout;
-  let _value = value;
-
-  return customRef((track, trigger) => ({
-    get() {
-      track();
-      return _value;
-    },
-    set(newValue) {
-      clearTimeout(timeout);
-      timeout = setTimeout(() => {
-        _value = newValue;
-        trigger();
-      }, delay);
-    },
-  }));
-}
-
-/**
- * 创建可以手动控制更新的响应式状态
- */
-export function useManualReactive(initialValue) {
-  const state = shallowRef(initialValue);
-  const triggerUpdate = ref(0);
-
-  // 使用计算属性来创建依赖关系
-  const reactiveValue = computed(() => {
-    // 访问 triggerUpdate 来建立依赖
-    triggerUpdate.value;
-    return state.value;
-  });
-
-  const setValue = (newValue) => {
-    state.value = newValue;
-    // 手动触发更新
-    triggerUpdate.value++;
-  };
-
-  const forceUpdate = () => {
-    triggerUpdate.value++;
-  };
-
-  return {
-    value: reactiveValue,
-    setValue,
-    forceUpdate,
-  };
-}
-
-/**
- * 创建与外部存储同步的响应式状态
- */
-export function useExternalSync(key, storage = localStorage) {
-  const getStoredValue = () => {
-    try {
-      const item = storage.getItem(key);
-      return item ? JSON.parse(item) : null;
-    } catch {
-      return null;
-    }
-  };
-
-  const setStoredValue = (value) => {
-    try {
-      storage.setItem(key, JSON.stringify(value));
-    } catch (error) {
-      console.warn("Failed to save to storage:", error);
-    }
-  };
-
-  return customRef((track, trigger) => ({
-    get() {
-      track();
-      return getStoredValue();
-    },
-    set(newValue) {
-      setStoredValue(newValue);
-      trigger();
-    },
-  }));
-}
-
-/**
- * 创建可以批量更新的响应式状态
- */
-export function useBatchReactive(initialState = {}) {
-  const state = ref({ ...initialState });
-  const pendingUpdates = ref({});
-  let updateTimeout = null;
-
-  const queueUpdate = (key, value) => {
-    pendingUpdates.value[key] = value;
-
-    if (updateTimeout) {
-      clearTimeout(updateTimeout);
-    }
-
-    updateTimeout = setTimeout(() => {
-      // 批量应用更新
-      Object.assign(state.value, pendingUpdates.value);
-      pendingUpdates.value = {};
-      updateTimeout = null;
-    }, 0);
-  };
-
-  const flushUpdates = () => {
-    if (updateTimeout) {
-      clearTimeout(updateTimeout);
-      Object.assign(state.value, pendingUpdates.value);
-      pendingUpdates.value = {};
-      updateTimeout = null;
-    }
-  };
-
-  return {
-    state: readonly(state),
-    queueUpdate,
-    flushUpdates,
-    setProp: (key, value) => queueUpdate(key, value),
-  };
-}
-
+// 在状态改变后等待 DOM 更新
+count.value++
+await nextTick()
+// 现在 DOM 已经更新了
 ```
+
+### defineComponent()
+
+在定义 Vue 组件时提供类型推导的辅助函数。
+
+```js
+import { defineComponent } from 'vue'
+
+const MyComponent = defineComponent({
+  // 类型推导已启用
+  props: {
+    message: String
+  },
+  setup(props) {
+    props.message // 类型为 string
+  }
+})
+```
+
+### defineAsyncComponent()
+
+定义一个异步组件，它在运行时是懒加载的。
+
+```js
+import { defineAsyncComponent } from 'vue'
+
+const AsyncComp = defineAsyncComponent(() =>
+  import('./components/MyComponent.vue')
+)
+
+// 带选项
+const AsyncCompWithOptions = defineAsyncComponent({
+  loader: () => import('./Foo.vue'),
+  loadingComponent: LoadingComponent,
+  errorComponent: ErrorComponent,
+  delay: 200,
+  timeout: 3000
+})
+```
+
+## 响应式 API 最佳实践
+
+### 使用 `ref()` vs `reactive()`
+
+```js
+import { ref, reactive } from 'vue'
+
+// 推荐：基本数据类型使用 ref
+const count = ref(0)
+const message = ref('hello')
+
+// 推荐：对象使用 reactive
+const state = reactive({
+  count: 0,
+  message: 'hello'
+})
+
+// 从 reactive 对象中解构
+const { count, message } = toRefs(state)
+```
+
+### 避免响应式陷阱
+
+```js
+import { reactive, ref } from 'vue'
+
+// ❌ 错误：丢失响应性
+let state = reactive({ count: 0 })
+state = reactive({ count: 1 }) // 原始引用丢失
+
+// ✅ 正确：保持响应性
+const state = reactive({ count: 0 })
+state.count = 1
+
+// ❌ 错误：解构丢失响应性  
+const { count } = reactive({ count: 0 })
+
+// ✅ 正确：使用 toRefs
+const { count } = toRefs(reactive({ count: 0 }))
+```
+
+这些是 Vue 3 的真实官方 API，你可以在 [Vue.js 官方文档](https://vuejs.org/api/) 中查看完整的 API 参考。

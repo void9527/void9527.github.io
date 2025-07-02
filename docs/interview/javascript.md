@@ -455,3 +455,87 @@ console.log(`Performance 耗时：${perfEnd - perfStart}ms`); // 高精度且稳
 | 抗系统时间干扰 | ❌ 受系统时间调整影响 | ✅ 单调递增，不受影响        |
 | 典型用途	   | 记录绝对时间      | 	测量高精度时间间隔         |
 
+:::
+
+## for...of 中的异步迭代语法区别
+
+:::details
+`for (const event of await fetch(offset))` 和 `for await (const event of fetch(offset))` 这两种语法有重要区别：
+
+### 第一种：`for (const event of await fetch(offset))`
+
+```javascript
+for (const event of await fetch(offset)) {
+    // 处理 event
+}
+```
+
+**工作原理：**
+- 首先等待 `fetch(offset)` 完全执行完毕
+- 该函数必须返回一个**同步可迭代对象**（如数组）
+- 然后对这个结果进行常规的同步迭代
+
+**特点：**
+- 一次性获取所有数据后再开始迭代
+- 适用于返回数组等同步可迭代对象的函数
+- 内存使用可能较高（一次性加载所有数据）
+
+### 第二种：`for await (const event of fetch(offset))`
+
+```javascript
+for await (const event of fetch(offset)) {
+    // 处理 event
+}
+```
+
+**工作原理：**
+- `fetch(offset)` 返回一个**异步迭代器**（AsyncIterable）
+- 逐个等待每一项的产生
+- 支持流式处理，边获取边处理
+
+**特点：**
+- 流式处理，可以边获取数据边处理
+- 内存效率更高
+- 适用于大量数据或实时数据流
+- 需要函数返回 AsyncIterable 对象
+
+### 实际示例对比
+
+**第一种情况的函数实现：**
+```javascript
+async function fetch(offset) {
+    const response = await fetch(`/api/events?offset=${offset}`);
+    const data = await response.json();
+    return data.events; // 返回数组
+}
+```
+
+**第二种情况的函数实现：**
+```javascript
+async function* fetch(offset) {
+    let currentOffset = offset;
+    while (true) {
+        const response = await fetch(`/api/events?offset=${currentOffset}&limit=10`);
+        const data = await response.json();
+        
+        if (data.events.length === 0) break;
+        
+        for (const event of data.events) {
+            yield event; // 逐个产生事件
+        }
+        
+        currentOffset += data.events.length;
+    }
+}
+```
+
+### 使用场景建议
+
+- **使用第一种**：当你需要一次性获取所有数据，且数据量不是很大时
+- **使用第二种**：当处理大量数据、实时流数据，或者希望实现分页流式处理时
+
+选择哪种方式主要取决于你的 `fetch` 函数的实现和你的具体需求。
+
+:::
+
+## 
