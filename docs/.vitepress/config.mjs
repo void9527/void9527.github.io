@@ -623,6 +623,7 @@ export default defineConfig({
               ],
             },
             { text: "nvm", link: "/other/nvm" },
+            { text: "fvm", link: "https://fvm.app" },
             { text: "zx", link: "https://google.github.io/zx/getting-started" },
             {
               text: "Charles",
