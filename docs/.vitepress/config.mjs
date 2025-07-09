@@ -199,6 +199,10 @@ export default defineConfig({
       ],
       "/platform/": [
         {
+          text: "跨平台对比",
+          link: "/platform/contrast",
+        },
+        {
           text: "移动端",
           collapsed: false,
           items: [
