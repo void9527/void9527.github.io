@@ -123,72 +123,72 @@ TypeScript是一种静态类型的编程语言，提供了类型系统来增强J
 1. 定义方式
 
     - **interface**：
-    - 用于定义对象的结构，包括属性和方法。
-    - 可以通过`extends`关键字进行继承，支持多重继承。
-    - 示例：
+      - 用于定义对象的结构，包括属性和方法。
+      - 可以通过`extends`关键字进行继承，支持多重继承。
+      - 示例：
 
-        ```typescript
-        interface Person {
-            name: string;
-            age: number;
-        }
+          ```typescript
+          interface Person {
+              name: string;
+              age: number;
+          }
 
-        interface Employee extends Person {
-            employeeId: number;
-        }
-        ```
+          interface Employee extends Person {
+              employeeId: number;
+          }
+          ```
 
     - **type**：
-    - 用于定义任意类型，包括基本类型、联合类型、元组等。
-    - 可以使用`&`符号进行交叉类型定义。
-    - 示例：
+      - 用于定义任意类型，包括基本类型、联合类型、元组等。
+      - 可以使用`&`符号进行交叉类型定义。
+      - 示例：
 
-        ```typescript
-        type StringOrNumber = string | number;
+          ```typescript
+          type StringOrNumber = string | number;
 
-        type User = {
-            name: string;
-            age: number;
-        } & {
-            email: string;
-        };
-        ```
+          type User = {
+              name: string;
+              age: number;
+          } & {
+              email: string;
+          };
+          ```
 
 2. 扩展与合并
 
     - **interface**：
-    - 支持声明合并（declaration merging），同名的接口会自动合并。
-    - 示例：
+      - 支持声明合并（declaration merging），同名的接口会自动合并。
+      - 示例：
 
-        ```typescript
-        interface User {
-            name: string;
-        }
+          ```typescript
+          interface User {
+              name: string;
+          }
 
-        interface User {
-            age: number;
-        }
+          interface User {
+              age: number;
+          }
 
-        const user: User = {
-            name: 'Alice',
-            age: 30,
-        };
-        ```
+          const user: User = {
+              name: 'Alice',
+              age: 30,
+          };
+          ```
 
     - **type**：
-    - 不支持声明合并，若定义同名的类型会导致错误。
-    - 示例：
+      - 不支持声明合并，若定义同名的类型会导致错误。
+      - 示例：
 
-        ```typescript
-        type User = {
-            name: string;
-        };
+          ```typescript
+          type User = {
+              name: string;
+          };
 
-        // 下面的定义会导致错误
-        // type User = {
-        //   age: number;
-        // };
-        ```
+          // 下面的定义会导致错误
+          // type User = {
+          //   age: number;
+          // };
+          ```
 
 3. 适用场景
    - **interface**：
