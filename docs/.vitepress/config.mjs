@@ -36,6 +36,15 @@ export default defineConfig({
       { text: '首页', link: '/' },
       { text: '工具', link: '/other/adb' },
       {
+        text: 'AI',
+        items: [
+          {
+            text: '简介',
+            link: '/ai/index',
+          },
+        ],
+      },
+      {
         text: '代码片段',
         items: [
           {
@@ -136,6 +145,17 @@ export default defineConfig({
     ],
 
     sidebar: {
+      '/ai/': [
+        {
+          text: 'huggingface',
+          items: [
+            {
+              text: 'CLI',
+              link: 'https://huggingface.co/docs/huggingface_hub/main/en/guides/cli#hf-download',
+            },
+          ],
+        },
+      ],
       '/interview/': [
         {
           text: '浏览器',
@@ -226,6 +246,10 @@ export default defineConfig({
           text: 'pc',
           collapsed: false,
           items: [
+            {
+              text: 'IWA',
+              link: 'https://developer.chrome.com/docs/iwa?hl=zh-cn',
+            },
             {
               text: 'Tauri',
               link: '/platform/tauri/index',
