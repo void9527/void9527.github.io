@@ -79,3 +79,12 @@ noNumberType('12')
 ```
 
 :::
+
+## 对象根据固定key 的value 限定 对象的key
+
+:::details
+
+```ts
+type Obj = {type:"text", text:String} | {type:"image", image:String};
+```
+:::

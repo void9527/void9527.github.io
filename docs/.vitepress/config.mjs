@@ -414,7 +414,17 @@ export default defineConfig({
           link: '/engineering/cicd',
           items: [
             { text: 'Jenkins', link: 'https://www.jenkins.io/' },
-            { text: 'Docker', link: '/engineering/docker' },
+            {
+              text: 'Docker',
+              link: '/engineering/docker',
+              items: [
+                { text: 'DockerFile', link: '/engineering/docker/dockerFile' },
+                {
+                  text: 'docker-compose',
+                  link: '/engineering/docker/dockerCompose',
+                },
+              ],
+            },
           ],
         },
         {
