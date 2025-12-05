@@ -5,9 +5,9 @@
 layout: home
 
 hero:
-  name: "help"
-  text: "腹有诗书气自华"
-  tagline: ""
+  name: ""
+  text: ""
+  tagline: "腹有诗书气自华"
   image:
   actions:
     - theme: brand

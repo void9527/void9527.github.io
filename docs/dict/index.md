@@ -81,7 +81,7 @@ sidebar: false
 | [adb 官网](https://developer.android.google.cn/) | android 调试工具    |
 | [docker 官网](https://www.docker.com/)           | 容器管理工具        |
 | [git 官网](https://git-scm.com/)                 | 版本控制工具        |
-| [flutter 中文网](https://flutter.cn/)            | flutter 管理工具    |
+| [fvm 官网](https://fvm.app/)                    | flutter 管理工具    |
 | [wget 官网](https://www.gnu.org/software/wget/)  | 下载工具            |
 
 # 静态服务器
