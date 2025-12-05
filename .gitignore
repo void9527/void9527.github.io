@@ -5,3 +5,7 @@ node_modules/
 .vitepress/dist/**
 .vscode/**
 .DS_Store
+
+docs/.vitepress/**
+
+.idea/**
