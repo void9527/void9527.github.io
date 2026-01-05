@@ -386,19 +386,93 @@ const stats = await prisma.post.aggregate({
 
 :::
 
-## 数据库迁移
+## 数据库表的建模
 
-:::details
+数据库表的建模是指根据业务需求，将数据实体和属性映射到数据库表中的过程。在 Prisma 中，我们使用 Prisma Schema 来定义数据库表的结构和关系。
 
+:::details Prisma Schema 示例
+
+```prisma [schema.prisma]
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  name      String?
+  posts     Post[]
+}
+
+model Post {
+  id        Int      @id @default(autoincrement())
+  title     String
+  content   String?
+  published Boolean  @default(false)
+  author    User     @relation(fields: [authorId], references: [id])
+  authorId  Int
+} 
+```
+:::
+### 仅使用 Prisma Client 客户端
+- 先在数据库中创建表格
+- 然后使用 Prisma Client 客户端进行 schema.prisma 和更新
+- 最后使用 Prisma Client 客户端进行数据操作
+
+::: details schema.prisma 和更新
 ```bash
 # 生成迁移文件
-npx prisma migrate dev --name init
-
-# 应用迁移
-npx prisma migrate deploy
+npx prisma db pull
 
 # 生成 Prisma Client
 npx prisma generate
 ```
-
 :::
+
+### 使用 Prisma Client 和 Prisma Migrate
+
+::: details schema.prisma 和更新
+```bash
+# 1. 创建并迁移
+prisma migrate dev
+
+# 2. 直接推送
+prisma db push
+```
+## 生成器
+### markdown 文档
+| 生成器                                                             | 描述                                |
+| ------------------------------------------------------------------ | ----------------------------------- |
+| [markdown](https://github.com/samchon/prisma-markdown)             | 生成 Prisma Schema 的 Markdown 文档 |
+| [Api docs](https://github.com/pantharshit00/prisma-docs-generator) | 创建并生成 API 文档                 |
+| [erd 图](https://github.com/keonik/prisma-erd-generator)           | 生成 Prisma Schema 的 ERD 图        |
+
+
+
+## [属性介绍](https://www.prisma.io/docs/orm/reference/prisma-schema-reference#attributes)
+| 属性名      | 类型     | 描述           | 示例                                              |
+| ----------- | -------- | -------------- | ------------------------------------------------- |
+| `@@map`     | `String` | 数据库表别名   | `@@map("users")`                                  |
+| `@id`       | `Int`    | 主键           | `@id`                                             |
+| `@unique`   | `String` | 唯一索引       | `@unique(["email"])`                              |
+| `@index`    | `String` | 索引           | `@index(["name"])`                                |
+| `@default`  | `String` | 默认值         | `@default("")`                                    |
+| `@db.*`     | `String` | 数据库字段类型 | `@db.VarChar(255)`                                |
+| `@relation` | `String` | 关系           | `@relation(fields: [authorId], references: [id])` |
+
+## [属性函数](https://www.prisma.io/docs/orm/reference/prisma-schema-reference#attribute-functions)
+| 函数名            | 描述     | 示例                        |
+| ----------------- | -------- | --------------------------- |
+| `autoincrement()` | 自动递增 | `@default(autoincrement())` |
+| `now()`           | 当前时间 | `@default(now())`           |
+| `uuid()`          | UUID     | `@default(uuid())`          |
+| `cuid()`          | CUID     | `@default(cuid())`          |
+
+## [枚举类型](https://www.prisma.io/docs/orm/reference/prisma-schema-reference#enum)
+
+## 查询示例
+| 指令                  | 描述                 | 返回类型 |
+| --------------------- | -------------------- | -------- |
+| `findMany()`          | 查询所有             | `Post[]` |
+| `findFirst()`         | 查询第一条           | `Post`   |
+| `findFirstOrThrow()`  | 查询第一条或抛出错误 | `Post`   |
+| `findUnique()`        | 查询唯一             | `Post`   |
+| `findUniqueOrThrow()` | 查询唯一或抛出错误   | `Post`   |
+| `create()`            | 创建新记录           | `Post`   |
+

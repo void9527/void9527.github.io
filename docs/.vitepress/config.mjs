@@ -119,6 +119,10 @@ export default defineConfig({
             text: '浏览器',
             link: '/other/doc/browser/',
           },
+          {
+            text: '数据库',
+            link: '/database/',
+          },
         ],
       },
       {
@@ -477,6 +481,29 @@ export default defineConfig({
           items: [{ text: 'axios', link: '/markdown-examples' }],
         },
       ],
+      '/database/': [
+        {
+          text: 'ORM',
+          collapsed: false,
+          items: [
+            { text: 'Sequelize', link: '/database/orm/sequelize' },
+            { text: 'TypeORM', link: '/database/orm/typeorm' },
+            { text: 'Prisma', link: '/database/orm/prisma' },
+          ],
+        },
+        {
+          text: 'MySQL',
+          link: '/database/mysql',
+        },
+        {
+          text: 'PostgreSQL',
+          link: '/database/postgresql',
+        },
+        {
+          text: 'Redis',
+          link: '/database/redis',
+        },
+      ],
       '/code/': [
         {
           text: 'node',
@@ -486,6 +513,14 @@ export default defineConfig({
             {
               text: 'EggJS',
               link: '/code/node/eggjs',
+            },
+            {
+              text: 'Oss',
+              link: '/code/node/oss',
+            },
+            {
+              text: 'Tos',
+              link: '/code/node/tos',
             },
           ],
         },

@@ -1,4 +1,5 @@
 ---
+outline: deep
 ---
 # mysql
 

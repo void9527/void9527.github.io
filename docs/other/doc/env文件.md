@@ -57,7 +57,7 @@ outline: deep
    - 系统环境变量在系统运行期间一直存在
 3. 使用方式
    - .env 变量需要通过特定的库来读取（如 Node.js 的 dotenv、Python 的 python-dotenv）
-   - 系统环境变量可以直接通过系统API或命令访问
+   - 系统环境变量可以直接通过系统 API 或 命令访问
   
 ## .env 文件格式要求
 
