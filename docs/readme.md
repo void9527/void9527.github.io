@@ -3,7 +3,7 @@ outline: deep
 sidebar: false
 ---
 # 附属项目
-## [MDN演示项目](https://gitee.com/maYun18600917746/mdn)
+## [MDN 演示项目](https://b7b20090.pinit.eth.limo/)
 - 纯前端项目，基于MDN接口，实现一个所有调用案例的演示项目
 
 ## [动态编译项目](https://gitee.com/maYun18600917746/regon-tree-shaking)

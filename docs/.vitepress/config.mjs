@@ -101,6 +101,7 @@ export default defineConfig({
         items: [
           { text: '简介', link: '/react/index' },
           { text: '配置', link: '/react/config' },
+          { text: '库', link: '/react/node_modules' },
         ],
       },
 
@@ -361,6 +362,24 @@ export default defineConfig({
             { text: 'Redux', link: 'https://redux.js.org/' },
           ],
         },
+        {
+          text: '套件',
+          collapsed: false,
+          items: [
+            {
+              text: 'TanStack',
+              link: 'https://tanstack.com/',
+            }
+          ]
+        },
+        {
+          text: '库推荐',
+          collapsed: false,
+          items: [{
+            text: 'Immer',
+            link: 'https://immerjs.github.io/immer/'
+          }]
+        }
       ],
       '/engineering/': [
         {
