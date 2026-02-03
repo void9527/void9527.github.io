@@ -529,10 +529,14 @@ export default defineConfig({
           collapsed: false,
           items: [
             { text: '代码块', link: '/code/node/index' },
-            {
+          {
               text: 'EggJS',
               link: '/code/node/eggjs',
-            },
+          },
+          {
+              text: 'Fastify',
+              link: '/code/node/fastify',
+          },
             {
               text: 'Oss',
               link: '/code/node/oss',
