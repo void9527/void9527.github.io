@@ -358,7 +358,7 @@ export default defineConfig({
           collapsed: false,
           items: [
             { text: '✅ Valtio', link: 'https://valtio.dev/' },
-            { text: 'Zustand', link: 'https://zustand.docschina.org/' },
+            { text: 'Zustand', link: '/react/zustand' },
             { text: 'Redux', link: 'https://redux.js.org/' },
           ],
         },
